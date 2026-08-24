@@ -2,6 +2,7 @@
 #include "models/room_category.h"
 #include "models/rooms.h"
 #include "enums/room_name.h"
+#include "models/guest_details.h"
 
 int main(){
 
@@ -11,7 +12,10 @@ int main(){
     RoomCategory* deluxe = new RoomCategory(RoomNames::DELUXE,4,2000);
     RoomCategory* suite = new RoomCategory(RoomNames::SUITE,6,4000);
 
-    Rooms* r1 = new Rooms(1, standard, false);
-	std::cout<<r1->getRoomCategory()->getRoomCapacity();
+    Room* r1 = new Room(1, standard, false);
+	std::cout<<r1->getRoomCategory()->getRoomCapacity()<<std::endl;
+
+    GuestDetails* guest1= new GuestDetails("Sharan","9345480377","sharannagarajan06@gmail.com");
+    std::cout<<guest1->getGuestName()<<std::endl;
 
 }

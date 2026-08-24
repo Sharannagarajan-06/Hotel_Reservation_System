@@ -7,11 +7,11 @@
 
 // This file is the implementation of the declerations in the file named rooms.h
 
-Rooms::Rooms(int room_number, RoomCategory* room_category, bool room_status){
+Room::Room(int room_number, RoomCategory* room_category, bool room_status){
         this->room_number=room_number;
         this->room_category=room_category;
         this->room_status=room_status;
 }
-RoomCategory* Rooms::getRoomCategory() {
+RoomCategory* Room::getRoomCategory() {
     return room_category;
 }

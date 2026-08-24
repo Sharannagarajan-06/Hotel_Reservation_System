@@ -10,7 +10,7 @@
             this->room_name=room_name;
             this->room_capacity=room_capacity;
             this->room_base_rate=room_base_rate;
-        }
+    }
     void RoomCategory::setRoomName(RoomNames room_name){
         this->room_name=room_name;
     }
