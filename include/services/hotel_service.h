@@ -21,6 +21,9 @@ public:
         std::chrono::year_month_day check_in,
         std::chrono::year_month_day check_out);
 
+		void cancelReservedRoom(int reservation_id);
+        Reservation* isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations);
+
 };
 
 

@@ -25,6 +25,10 @@ public:
     std::chrono::year_month_day checkIn,
     std::chrono::year_month_day checkOut);
 
+    void removeAvailability(int roomId,
+    std::chrono::year_month_day new_check_in,
+    std::chrono::year_month_day new_check_out);
+
 };
 
 

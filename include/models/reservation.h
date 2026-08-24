@@ -29,12 +29,13 @@ public:
 
 	std::chrono::year_month_day getCheckIn();
 
-	std::chrono::year_month_day getCheckout();
+	std::chrono::year_month_day getCheckOut();
 
 	ReservationStatus getReservationStatus();
     void setReservationStatus(ReservationStatus reservation_status);
 
     int getReservationId();
+    int getRoomNumber();
 
 };
 

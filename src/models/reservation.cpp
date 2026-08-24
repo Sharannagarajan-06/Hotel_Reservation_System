@@ -22,7 +22,7 @@ Reservation::Reservation(
             return this->check_in;
         }
 
-        std::chrono::year_month_day Reservation::getCheckout(){
+        std::chrono::year_month_day Reservation::getCheckOut(){
             return this->check_out;
         }
 
@@ -36,5 +36,9 @@ Reservation::Reservation(
 
         int Reservation::getReservationId(){
             return this->reservation_id;
+        }
+
+        int Reservation::getRoomNumber(){
+            return this->room_number;
         }
 

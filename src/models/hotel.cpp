@@ -48,7 +48,7 @@
             reservations.push_back(reservation);
     }
 
-    std::vector<Reservation*> Hotel::getReservation(){
+    std::vector<Reservation*> Hotel::getReservations(){
         return reservations;
     }
 

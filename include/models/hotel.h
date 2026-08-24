@@ -25,7 +25,7 @@ public:
     void addGuest(GuestDetails* guest);
     bool removeGuest(GuestDetails* guest);
     void addReservation(Reservation * reservation);
-    std::vector<Reservation*> getReservation();
+    std::vector<Reservation*> getReservations();
 
 };
 

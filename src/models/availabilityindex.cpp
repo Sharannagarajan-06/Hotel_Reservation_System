@@ -11,7 +11,13 @@ void  AvailabilityIndex::updateAvailability(int roomId,
         availability[roomId].insert({new_check_in,new_check_out});
 
 }
+void AvailabilityIndex::removeAvailability(int roomId,
+    std::chrono::year_month_day new_check_in,
+    std::chrono::year_month_day new_check_out){
 
+    availability[roomId].erase({new_check_in,new_check_out});
+
+}
 bool AvailabilityIndex::isFree(int roomId,
     std::chrono::year_month_day new_check_in,
     std::chrono::year_month_day new_check_out){

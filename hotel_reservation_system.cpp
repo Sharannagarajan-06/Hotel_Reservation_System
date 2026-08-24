@@ -56,4 +56,8 @@ auto checkOut = std::chrono::year_month_day{
 	std::cout<<"hello"<<std::endl;
        HotelService hs(hotel);
        hs.reserveRoom(RoomNames::STANDARD,checkIn,checkOut);
+
+    int reservation_id;
+    std::cin>>reservation_id;
+    hs.cancelReservedRoom(reservation_id);
 }
