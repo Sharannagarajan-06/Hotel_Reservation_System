@@ -13,6 +13,8 @@ private:
 
     inline static int next_reservation_id=1;
     int reservation_id;
+    int room_number;
+    int guest_id;
     std::chrono::year_month_day check_in;
     std::chrono::year_month_day check_out;
     ReservationStatus reservation_status;
@@ -21,7 +23,9 @@ public:
 
     Reservation(
     std::chrono::year_month_day check_in,
-    std::chrono::year_month_day check_out);
+    std::chrono::year_month_day check_out,
+    int room_number,int guest_id);
+
 
 	std::chrono::year_month_day getCheckIn();
 
