@@ -1,9 +1,11 @@
 #include <iostream>
+#include <chrono>
 #include "models/room_category.h"
 #include "models/rooms.h"
 #include "enums/room_name.h"
 #include "models/guest_details.h"
 #include "models/hotel.h"
+#include "models/reservation.h"
 
 int main(){
 
@@ -19,5 +21,20 @@ int main(){
     h->addRoom(r1);
     GuestDetails* guest1= new GuestDetails("Sharan","9345480377","sharannagarajan06@gmail.com");
     std::cout<<guest1->getGuestName()<<std::endl;
+
+auto checkIn = std::chrono::year_month_day{
+    std::chrono::year{2026},
+    std::chrono::month{8},
+    std::chrono::day{24}
+};
+
+auto checkOut = std::chrono::year_month_day{
+    std::chrono::year{2026},
+    std::chrono::month{8},
+    std::chrono::day{28}
+};
+
+Reservation reservation(checkIn, checkOut);
+	std::cout<<reservation.getReservationId()<<reservation.getCheckIn();
 
 }
