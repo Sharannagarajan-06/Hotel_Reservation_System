@@ -93,3 +93,46 @@ Reservation* HotelService::isValidReservationid(int reservation_id,std::vector<R
 	return NULL;
 }
 
+Room* HotelService::findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms){
+
+    for(auto room:Rooms){
+        if(room->getRoomNumber()==room_number) return room;
+    }
+    return NULL;
+}
+void HotelService::setCheckInStatus(int reservation_id){
+
+        std::vector<Reservation*> reservations=hotel.getReservations();
+
+        std::vector<Room*>Rooms=hotel.getRooms();
+
+		Reservation* reservation=isValidReservationid(reservation_id,reservations);
+
+        Room*room =findRoomByRoomNumber(reservation->getRoomNumber(),Rooms);
+
+        if(room->getRoomStatus()==true)std::cout<<"The Room is Already Been ocuupied"<<std::endl;
+
+		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
+
+        reservation->setReservationStatus(ReservationStatus::CHECKED_IN);
+
+}
+
+void HotelService::setCheckOutStatus(int reservation_id){
+
+        std::vector<Reservation*> reservations=hotel.getReservations();
+
+        std::vector<Room*>Rooms=hotel.getRooms();
+
+		Reservation* reservation=isValidReservationid(reservation_id,reservations);
+
+        Room*room =findRoomByRoomNumber(reservation->getRoomNumber(),Rooms);
+
+        if(room->getRoomStatus()==false)std::cout<<"The Room is Not Been ocuupied"<<std::endl;
+
+		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
+
+        reservation->setReservationStatus(ReservationStatus::CHECKED_OUT);
+
+}
+

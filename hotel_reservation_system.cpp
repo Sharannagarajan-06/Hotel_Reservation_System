@@ -16,7 +16,7 @@ int main(){
     RoomCategory* deluxe = new RoomCategory(RoomNames::DELUXE,4,2000);
     RoomCategory* suite = new RoomCategory(RoomNames::SUITE,6,4000);
 
-    Room* r1 = new Room(1, standard, false);
+    Room* r1 = new Room(1, standard);
 	std::cout<<r1->getRoomCategory()->getRoomCapacity()<<std::endl;
 
     Hotel hotel;

@@ -15,10 +15,12 @@ private:
         bool room_status;
 public:
         Room(int room_number,
-        RoomCategory * room_category,
-        bool room_status);
+        RoomCategory * room_category);
+
 		RoomCategory* getRoomCategory();
         int getRoomNumber();
+        bool getRoomStatus();
+        void setRoomStatus();
 };
 
 #endif //HOTELRESERVATIONSYSTEM_Room_H

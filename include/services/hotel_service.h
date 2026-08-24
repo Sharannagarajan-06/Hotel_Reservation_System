@@ -23,6 +23,9 @@ public:
 
 		void cancelReservedRoom(int reservation_id);
         Reservation* isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations);
+        void setCheckInStatus(int reservation_id);
+        Room* findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms);
+        void setCheckOutStatus(int reservation_id);
 
 };
 
