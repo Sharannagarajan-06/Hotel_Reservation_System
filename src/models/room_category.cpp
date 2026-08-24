@@ -14,6 +14,9 @@
     void RoomCategory::setRoomName(RoomNames room_name){
         this->room_name=room_name;
     }
+	RoomNames RoomCategory::getRoomName() {
+    return this->room_name;
+	}
     void RoomCategory::setRoomCapacity(int room_capacity){
         this->room_capacity=room_capacity;
     }
@@ -21,7 +24,7 @@
         return this->room_capacity;
     }
     void RoomCategory::setRoomBaseRate(int room_base_rate){
-        this->room_capacity=room_capacity;
+        this->room_base_rate=room_base_rate;
     }
     int RoomCategory::getRoomBaseRate(){
         return this->room_base_rate;

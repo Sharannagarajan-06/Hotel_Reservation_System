@@ -6,6 +6,7 @@
 #include "models/guest_details.h"
 #include "models/hotel.h"
 #include "models/reservation.h"
+#include "services/hotel_service.h"
 
 int main(){
 
@@ -17,11 +18,15 @@ int main(){
 
     Room* r1 = new Room(1, standard, false);
 	std::cout<<r1->getRoomCategory()->getRoomCapacity()<<std::endl;
-    Hotel* h = new Hotel();
-    h->addRoom(r1);
+
+    Hotel hotel;
+    hotel.addRoom(r1);
+
     GuestDetails* guest1= new GuestDetails("Sharan","9345480377","sharannagarajan06@gmail.com");
     std::cout<<guest1->getGuestName()<<std::endl;
 
+
+/*
 auto checkIn = std::chrono::year_month_day{
     std::chrono::year{2026},
     std::chrono::month{8},
@@ -36,5 +41,19 @@ auto checkOut = std::chrono::year_month_day{
 
 Reservation reservation(checkIn, checkOut);
 	std::cout<<reservation.getReservationId()<<reservation.getCheckIn();
+*/
+    auto checkIn = std::chrono::year_month_day{
+    std::chrono::year{2026},
+    std::chrono::month{8},
+    std::chrono::day{24}
+};
 
+auto checkOut = std::chrono::year_month_day{
+    std::chrono::year{2026},
+    std::chrono::month{8},
+    std::chrono::day{28}
+};
+	std::cout<<"hello"<<std::endl;
+       HotelService hs(hotel);
+       hs.reserveRoom(RoomNames::STANDARD,checkIn,checkOut);
 }

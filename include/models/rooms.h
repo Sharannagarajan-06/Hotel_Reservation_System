@@ -18,6 +18,7 @@ public:
         RoomCategory * room_category,
         bool room_status);
 		RoomCategory* getRoomCategory();
+        int getRoomNumber();
 };
 
 #endif //HOTELRESERVATIONSYSTEM_Room_H

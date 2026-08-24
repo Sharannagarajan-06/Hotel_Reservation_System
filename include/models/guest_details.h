@@ -27,8 +27,8 @@ public:
     std::string guest_phone_number,
     std::string guest_email);
 
-//Getter for Getting the room ID
-    int getGuestID();
+//Getter for Getting the Guest ID
+    int getGuestId();
 
 //Getter for Getting the Guest Name
     std::string getGuestName();

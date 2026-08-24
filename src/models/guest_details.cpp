@@ -17,7 +17,7 @@ GuestDetails::GuestDetails( std::string guest_name,
         this->guest_email=guest_email;
 }
 
-int GuestDetails::getGuestID(){
+int GuestDetails::getGuestId(){
     return this->guest_id;
 }
 std::string GuestDetails::getGuestName(){

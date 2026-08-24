@@ -43,3 +43,14 @@
     std::vector<GuestDetails*> Hotel::getGuests(){
         return Hotel::guests;
     }
+
+    void Hotel::addReservation(Reservation * reservation){
+            reservations.push_back(reservation);
+    }
+
+    std::vector<Reservation*> Hotel::getReservation(){
+        return reservations;
+    }
+
+
+

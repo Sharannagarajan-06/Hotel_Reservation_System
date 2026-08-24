@@ -10,7 +10,7 @@ Reservation::Reservation(
     std::chrono::year_month_day check_in,
     std::chrono::year_month_day check_out,
     int room_number,int guest_id){
-        this->reservation_id=Reservation::next_reservation_id++;;
+        this->reservation_id=Reservation::next_reservation_id++;
         this->check_in=check_in;
         this->check_out=check_out;
         this->reservation_status=ReservationStatus::RESERVED;

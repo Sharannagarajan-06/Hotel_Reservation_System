@@ -15,3 +15,7 @@ Room::Room(int room_number, RoomCategory* room_category, bool room_status){
 RoomCategory* Room::getRoomCategory() {
     return room_category;
 }
+
+int Room::getRoomNumber(){
+    return this->room_number;
+}

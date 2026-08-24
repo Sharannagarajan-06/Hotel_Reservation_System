@@ -8,12 +8,14 @@
 #include <vector>
 #include "models/rooms.h"
 #include "models/guest_details.h"
+#include "models/reservation.h"
 
 class Hotel {
 
 private:
     std::vector<Room*>rooms;
     std::vector<GuestDetails*>guests;
+    std::vector<Reservation*>reservations;
 
 public:
     std::vector<Room*> getRooms();
@@ -22,6 +24,8 @@ public:
     std::vector<GuestDetails*>getGuests();
     void addGuest(GuestDetails* guest);
     bool removeGuest(GuestDetails* guest);
+    void addReservation(Reservation * reservation);
+    std::vector<Reservation*> getReservation();
 
 };
 
