@@ -3,6 +3,7 @@
 //
 
 #include "services/auth_service.h"
+#include "exceptions/user_exception.h"
 
 AuthService::AuthService(Hotel& hotel):hotel(hotel){}
 
@@ -12,7 +13,9 @@ UserDetails* AuthService::login(std::string email , std::string password){
     for(auto& user:users){
         if(user->getUserEmail()==email &&user->getUserPassword()==password)  return user.get();
     }
-    return NULL;
+    throw AuthenticationFailedException(
+        "Invalid email or password"
+    );
 }
 
 bool AuthService::isAdmin(UserDetails* user){

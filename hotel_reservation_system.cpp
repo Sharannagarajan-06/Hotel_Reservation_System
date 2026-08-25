@@ -10,12 +10,14 @@
 #include "services/auth_service.h"
 #include "models/admin_details.h"
 #include "services/logger_service.h"
+#include "exceptions/hotel_exception.h"
+#include "exceptions/user_exception.h"
 void guestMenu(Hotel& hotel,LoggerService& loggerservice){
 
     bool exit_flag = false;
     HotelService hotelservice(hotel,loggerservice);
     while(!exit_flag){
-
+        try{
         system("cls");
         std::cout<<"1.Reserve Room "<<std::endl;
         std::cout<<"2.Cancel Reserved Room"<<std::endl;
@@ -31,6 +33,7 @@ void guestMenu(Hotel& hotel,LoggerService& loggerservice){
                 break;
             case 2:
                 hotelservice.cancelReservedRoom();
+                break;
              case 3:
                 exit_flag=true;
                 break;
@@ -39,12 +42,19 @@ void guestMenu(Hotel& hotel,LoggerService& loggerservice){
                  break;
          }
     }
+    catch (const HotelException& e) {
+
+        std::cout << "\nHotel Error: "
+                  << e.what()
+                  << "\n";
+       }
+    }
 }
 
 bool verifyAdmin(Hotel& hotel){
 
     std::string admin_email,admin_password;
-
+    std::cout<<"Login Using Your Admin Account"<<std::endl;
     std::cout<<"Enter the Email:";
     std::cin>>admin_email;
 
@@ -55,8 +65,18 @@ bool verifyAdmin(Hotel& hotel){
     AuthService authservice(hotel) ;
     UserDetails* user= authservice.login(admin_email,admin_password);
 
+    if (!user) {
+        throw AuthenticationException(
+            "Invalid email or password"
+        );
+    }
 
-    if(user!=NULL && authservice.isAdmin(user)) return true;
+    if (!authservice.isAdmin(user)) {
+        throw UnauthorizedException(
+            "User does not have admin privileges"
+        );
+    }
+
     return false;
 
 }
@@ -64,8 +84,9 @@ void adminMenu(Hotel& hotel,LoggerService& loggerservice){
     bool exit_flag = false;
     HotelService hotelservice(hotel,loggerservice);
 
-     while(!exit_flag){
 
+     while(!exit_flag){
+        try{
         //system("cls");
         std::cout<<"1.Add a Room"<<std::endl;
         std::cout<<"2.Delete a Room"<<std::endl;
@@ -75,9 +96,10 @@ void adminMenu(Hotel& hotel,LoggerService& loggerservice){
         std::cout<<"6.Generate Report"<<std::endl;
         std::cout<<"7.See Log Messages"<<std::endl;
         std::cout<<"8.Exit"<<std::endl;
-
+        std::cout<<"Enter Your Choice:";
         int choice;
         std::cin>>choice;
+
 
          switch(choice){
 
@@ -108,23 +130,29 @@ void adminMenu(Hotel& hotel,LoggerService& loggerservice){
             default:
                 std::cout<<"Enter the Valid output"<<std::endl;
                  break;
-         }
+             }
+        }
+        catch (const HotelException& e) {
+
+        std::cout << "\nHotel Error: "
+                  << e.what()
+                  << "\n";
+    }
     }
 }
 void showMainMenu(Hotel& hotel,LoggerService& loggerservice){
 
     bool exit_flag = false;
     while(!exit_flag){
-        system("cls");
         std::cout<<"Welcome to ABC Hotel"<<std::endl;
         std::cout<<"1.Admin Options"<<std::endl;
         std::cout<<"2.Customer Options"<<std::endl;
         std::cout<<"3.Exit"<<std::endl;
-        std::cout<<"Eneter Your Choice:";
-        std::cout<<std::endl;
+        std::cout<<"Enter Your Choice:";
+
         int choice;
         std::cin>>choice;
-
+        std::cout<<std::endl;
          switch(choice){
 
             case 1:
@@ -149,7 +177,7 @@ void showMainMenu(Hotel& hotel,LoggerService& loggerservice){
     }
 }
 int main(){
-
+try {
    Hotel hotel;
     LoggerService loggerservice;
     auto admin= std::make_unique<AdminDetails>("Sharan",
@@ -158,6 +186,18 @@ int main(){
      "123");
     hotel.adduser(std::move(admin));
    showMainMenu(hotel,loggerservice);
+}
+    catch (const HotelException& e) {
+        std::cerr << "Hotel Error: "
+                  << e.what()
+                  << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "System Error: "
+                  << e.what()
+                  << std::endl;
+    }
 
+    return 0;
 
 }

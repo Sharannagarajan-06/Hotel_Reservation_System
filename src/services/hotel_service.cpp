@@ -24,6 +24,10 @@
 #include "models/billing_strategy.h"
 #include <mutex>
 #include <memory>
+#include "exceptions/room_exception.h"
+#include "exceptions/reservation_exception.h"
+#include "exceptions/billing_exception.h"
+
 
 bool checkRoom(int room_number,std::vector<Room*>& available_rooms){
        for(auto room:available_rooms){
@@ -69,7 +73,8 @@ void HotelService::searchRooms(){
     room_catlog.getCategory(RoomNames::SUITE)->getRoomBaseRate()<<"\n"
     "Capacity:"<<room_catlog.getCategory(RoomNames::SUITE)->getRoomCapacity()<<std::endl;
 
-    std::cout<<"Enter your Choice"<<std::endl;
+     std::cout<<"Prices of the Rooms May become 2X in Sesonal or Weekend Durations "<<std::endl;
+    std::cout<<"Enter your Choice: ";
     int choice;
     std::cin>>choice;
 
@@ -90,12 +95,14 @@ void HotelService::searchRooms(){
             return;
     }
     std::string check_in_date,check_out_date;
-    std::cout<<"Enter The date for CheckIn:(YYYY-MM-DD)"<<std::endl;
+    std::cout<<"Enter The date for CheckIn:(YYYY-MM-DD)";
     std::cin>>check_in_date;
-    std::cout<<"Enter the date for CheckOut:(YYYY-MM-DD)"<<std::endl;
+    std::cout<<std::endl;
+    std::cout<<"Enter the date for CheckOut:(YYYY-MM-DD)";
     std::cin>>check_out_date;
+    std::cout<<std::endl;
 
-        std::chrono::year_month_day check_in=getChronoDateFormat(check_in_date);
+       std::chrono::year_month_day check_in=getChronoDateFormat(check_in_date);
        std::chrono::year_month_day check_out=getChronoDateFormat(check_out_date);
 
        auto& rooms=hotel.getRooms();
@@ -110,7 +117,7 @@ void HotelService::searchRooms(){
         }
 
         if(available_rooms.size()==0){
-            std::cout<<"Type of the Room Not Available For the mentinoed Dates";
+            std::cout<<"Type of the Room Not Available For the mentinoed Dates"<<std::endl;
             return ;
         }
 
@@ -131,9 +138,6 @@ void HotelService::reserveRoom(int room_number,
     std::chrono::year_month_day check_out){
 
        std::mutex reservation_mutex;
-       std::cout<<"1.Exisisting User"<<std::endl;
-       std::cout<<"2.New User"<<std::endl;
-
        std::string guest_email,guest_password;
 
        UserDetails* guest_ptr;
@@ -146,8 +150,6 @@ void HotelService::reserveRoom(int room_number,
        std::cin>>choice;
 
     switch (choice){
-
-
        case 1:{
             std::cout<<"Enter your Email:";
             std::cin>>guest_email;
@@ -156,17 +158,15 @@ void HotelService::reserveRoom(int room_number,
             std::cin>>guest_password;
            std::cout<<std::endl;
            AuthService authservice(hotel) ;
-           UserDetails* user= authservice.login(guest_email,guest_password);
-           if(user==NULL){
+           guest_ptr= authservice.login(guest_email,guest_password);
+           if(guest_ptr==NULL){
                 std::cout << "User Not found" << std::endl;
-                return;
             }
            else{
-                std::cout<<"A default guest has been Created with password guest@123"
-                    <<"you can later change it in Guest Options"<<std::endl;
+                std::cout<<"User found";
                 exit_flag=true;
-                }
-
+           }
+            break;
            }
         case 2:{
            std::string guest_name,guest_phone_number,guest_email;
@@ -187,14 +187,17 @@ void HotelService::reserveRoom(int room_number,
                             guest_email);
            guest_ptr = guest.get();
            hotel.adduser(std::move(guest));
+           std::cout<<"A default guest has been Created with password guest@123"
+                    <<"you can later change it in Guest Options"<<std::endl;
            exit_flag=true;
         }
     }
 }
        std::lock_guard<std::mutex> lock(reservation_mutex);
         if (!availability_index.isFree(room_number,check_in,check_out)){
-            std::cout << "Room Has Already Been booked";
-            return;
+            throw RoomUnavailableException(
+                "Room is already booked for the selected dates"
+            );
         }
        auto reservation = std::make_unique<Reservation>(check_in,check_out,room_number,guest_ptr->getUserId());
         Reservation* reservation_ptr =reservation.get();
@@ -204,7 +207,7 @@ void HotelService::reserveRoom(int room_number,
        loggerservice.addLog(std::make_unique<Logger>(guest_ptr->getUserId(),reservation_ptr->getReservationId(),
                         LogMessageType::BOOKING));
 
-		std::cout<<"Your Rooms has Been Reserved with the booking Id:"<<
+	    std::cout<<"Your Rooms has Been Reserved with the booking Id:"<<
                             reservation_ptr->getReservationId()<<" "<<std::endl;
 
 }
@@ -219,7 +222,11 @@ void HotelService::cancelReservedRoom(){
 		auto& reservations =hotel.getReservations();
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
 
-		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
+		if (!reservation) {
+            throw ReservationNotFoundException(
+                "Invalid Reservation ID"
+            );
+        }
 
         availability_index.removeAvailability(reservation->getRoomNumber(),
                                                 reservation->getCheckIn(),
@@ -258,11 +265,25 @@ void HotelService::setCheckInStatus(){
         auto& rooms = hotel.getRooms();
 
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
-		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
+		if (!reservation) {
+            throw ReservationNotFoundException(
+                "Reservation ID not found"
+            );
+        }
 
         Room* room =findRoomByRoomNumber(reservation->getRoomNumber(),rooms);
 
-        if(room->getRoomStatus()==true)std::cout<<"The Room is Already Been ocuupied"<<std::endl;
+        if (!room) {
+            throw RoomNotFoundException(
+                "Room Cannot be found"
+                );
+        }
+
+        if (room->getRoomStatus()) {
+            throw RoomOccupiedException(
+                    "Room is already occupied"
+            );
+        }
 
 
         reservation->setReservationStatus(ReservationStatus::CHECKED_IN);
@@ -284,11 +305,19 @@ void HotelService::setCheckOutStatus(){
         auto& rooms = hotel.getRooms();
 
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
-		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
+		if(!reservation){
+             throw ReservationNotFoundException(
+                    "Reservation ID not found"
+             );
+    }
 
         Room*room =findRoomByRoomNumber(reservation->getRoomNumber(),rooms);
 
-        if(room->getRoomStatus()==false)std::cout<<"The Room is Not Been ocuupied"<<std::endl;
+        if (!room->getRoomStatus()) {
+            throw RoomException(
+                "Cannot check out because the room is not occupied By any Guest"
+        );
+}
 
 
         std::cout<<"Enter the New Billing Statergy"<<std::endl;
@@ -305,8 +334,9 @@ void HotelService::setCheckOutStatus(){
                billStrategy = std::make_unique<StandardBilling>();
                 break;
             default:
-                std::cout<<"Enter a Valid choice"<<std::endl;
-                break;
+                throw InvalidBillingStrategyException(
+                        "Invalid billing strategy selected"
+                );
         }
         double bill = billStrategy->calculateBill(
                                             reservation,
@@ -324,7 +354,7 @@ void HotelService::addRoom(){
     int choice;
     std::cout<<"1.Standard\n";
     std::cout<<"2.Deluxe\n";
-    std::cout<<"3.Suite\n";
+    std::cout<<"3.Suite";
     std::cin>>choice;
     RoomNames category_name;
     switch (choice) {
@@ -344,8 +374,9 @@ void HotelService::addRoom(){
     }
     std::shared_ptr<RoomCategory> category =room_catlog.getCategory(category_name);
     auto room = std::make_unique<Room>(category);
+    int room_number=room->getRoomNumber();
     hotel.addRoom(std::move(room));
-
+    std::cout<<"Room Created Successfully with Room Id: "<<room_number<<std::endl;
 }
 void HotelService::deleteRoom(){
 
@@ -354,7 +385,13 @@ void HotelService::deleteRoom(){
     std::cin>>room_number;
 
     auto& rooms = hotel.getRooms();
-
+    auto& reservations= hotel.getReservations();
+    for(auto& reservation : reservations){
+        if(reservation->getRoomNumber()==room_number) {
+               std::cout<<"Room Cannot Be Removed Since It has been Booked"<<std::endl;
+                return ;
+        }
+    }
     for(auto& room:rooms){
         if(room->getRoomNumber()==room_number){
             if(room->getRoomStatus()==true){
