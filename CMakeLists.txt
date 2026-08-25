@@ -7,7 +7,8 @@ project(hotel_reservation_system)
 
 # Make Library
 add_library(rooms STATIC src/models/room_category.cpp
-                         src/models/rooms.cpp   )
+                         src/models/rooms.cpp
+                        src/models/room_catlog.cpp)
 
 add_library(user STATIC src/models/guest_details.cpp
                         src/models/user_details.cpp

@@ -26,7 +26,7 @@ bool AvailabilityIndex::isFree(int roomId,
             auto existing_check_in = date_range.first;
             auto existing_check_out = date_range.second;
 
-            if(new_check_in<existing_check_out && new_check_out>existing_check_in) return false;
+            if(new_check_in < existing_check_out && new_check_out > existing_check_in) return false;
        }
     return true;
 }

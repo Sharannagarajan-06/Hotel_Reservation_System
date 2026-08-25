@@ -8,12 +8,16 @@
 #include "models/reservation.h"
 #include "models/hotel.h"
 #include "models/availabilityindex.h"
-
+#include "models/room_category.h"
+#include "models/room_catlog.h"
 class HotelService {
 
 private:
         Hotel& hotel;
         AvailabilityIndex  availability_index;
+        RoomCatlog room_catlog;
+
+
 public:
         HotelService(Hotel& hotel);
 
@@ -26,6 +30,11 @@ public:
         void setCheckInStatus(int reservation_id);
         Room* findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms);
         void setCheckOutStatus(int reservation_id);
+
+        void addRoom();
+        void deleteRoom();
+        void generateReport();
+        void CreateRoomCategoy();
 
 };
 

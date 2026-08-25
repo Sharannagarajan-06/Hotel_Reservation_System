@@ -10,12 +10,12 @@
 // This is class is a room entity which conatins the propertites of Room such as number , roomcategory ad its status
 class Room {
 private:
+        inline static int next_room_number=1;
         int room_number;
         RoomCategory * room_category;
         bool room_status;
 public:
-        Room(int room_number,
-        RoomCategory * room_category);
+        Room(RoomCategory * room_category);
 
 		RoomCategory* getRoomCategory();
         int getRoomNumber();

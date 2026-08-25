@@ -25,6 +25,7 @@ HotelService::HotelService(Hotel& hotel)
     : hotel(hotel) {
 }
 
+
 void HotelService::reserveRoom(RoomNames room_names,
         std::chrono::year_month_day check_in,
         std::chrono::year_month_day check_out){
@@ -135,4 +136,57 @@ void HotelService::setCheckOutStatus(int reservation_id){
         reservation->setReservationStatus(ReservationStatus::CHECKED_OUT);
 
 }
+
+void HotelService::addRoom(){
+
+    int choice;
+    std::cout<<"1.Standard\n";
+    std::cout<<"2.Deluxe\n";
+    std::cout<<"3.Suite\n";
+    std::cin>>choice;
+    RoomNames category_name;
+    switch (choice) {
+        case 1:
+            category_name=RoomNames::STANDARD;
+            break;
+        case 2:
+            category_name=RoomNames::DELUXE;
+            break;
+
+        case 3:
+            category_name=RoomNames::SUITE;
+            break;
+        default:
+            std::cout<<"Invalid category\n";
+            return;
+    }
+    RoomCategory& category = room_catlog.getCategory(category_name);
+    Room* room = new Room(const_cast<RoomCategory*>(&category));
+    hotel.addRoom(room);
+
+}
+void HotelService::deleteRoom(){
+
+    int room_number;
+    std::cout<<"Enter Your Room Number:";
+    std::cin>>room_number;
+
+    std::vector<Room*>rooms=hotel.getRooms();
+
+    for(auto room:rooms){
+        if(room->getRoomNumber()==room_number){
+            if(room->getRoomStatus()==true){
+            std::cout<<"The Given RoomNumber is Being Currently occupied By guest so it cannotbe deleted"<<std::endl;
+             return ;
+            }
+            else{
+                hotel.removeRoom(room);
+                std::cout<<"Room Successfully Removed"<<std::endl;
+                return ;
+            }
+        }
+    }
+    std::cout<<"The Paticular Cannot be Found Please Enter a Valid room Number"<<std::endl;
+}
+//void generateReport();
 

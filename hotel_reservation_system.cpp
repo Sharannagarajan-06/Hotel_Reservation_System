@@ -61,12 +61,12 @@ bool verifyAdmin(Hotel& hotel){
     return false;
 
 }
-void adminMenu(hotel& hotel){
+void adminMenu(Hotel& hotel){
     bool exit_flag = false;
 
      while(!exit_flag){
 
-        system("cls");
+        //system("cls");
         std::cout<<"1.Add a Room"<<std::endl;
         std::cout<<"2.Delete a Room"<<std::endl;
         std::cout<<"3.Reserve Room for a Guest"<<std::endl;
@@ -78,14 +78,14 @@ void adminMenu(hotel& hotel){
 
         int choice;
         std::cin>>choice;
-
+        HotelService hotelservice(hotel);
          switch(choice){
 
             case 1:
-                //Add room
+                hotelservice.addRoom();
                 break;
             case 2:
-                //delete room
+                hotelservice.deleteRoom();
                 break;
             case 3:
                 //Reserve room
