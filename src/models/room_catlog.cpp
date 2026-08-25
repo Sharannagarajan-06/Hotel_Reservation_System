@@ -10,17 +10,17 @@
 RoomCatlog::RoomCatlog() {
     categories.emplace(
         RoomNames::STANDARD,
-        RoomCategory(RoomNames::STANDARD, 1000, 2)
+        RoomCategory(RoomNames::STANDARD, 2, 2000)
     );
 
     categories.emplace(
         RoomNames::DELUXE,
-        RoomCategory(RoomNames::DELUXE, 3000, 3)
+        RoomCategory(RoomNames::DELUXE, 3,3000 )
     );
 
     categories.emplace(
         RoomNames::SUITE,
-        RoomCategory(RoomNames::SUITE, 4000, 4)
+        RoomCategory(RoomNames::SUITE, 4, 4000)
     );
 }
 

@@ -21,20 +21,22 @@ private:
 public:
         HotelService(Hotel& hotel);
 
-        void reserveRoom(RoomNames room_names,
+        void reserveRoom(int room_number,
         std::chrono::year_month_day check_in,
         std::chrono::year_month_day check_out);
 
 		void cancelReservedRoom(int reservation_id);
         Reservation* isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations);
-        void setCheckInStatus(int reservation_id);
+        void setCheckInStatus();
         Room* findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms);
-        void setCheckOutStatus(int reservation_id);
+        void setCheckOutStatus();
 
         void addRoom();
         void deleteRoom();
         void generateReport();
         void CreateRoomCategoy();
+        void searchRooms();
+        std::chrono::year_month_day getChronoDateFormat(std::string& date);
 
 };
 

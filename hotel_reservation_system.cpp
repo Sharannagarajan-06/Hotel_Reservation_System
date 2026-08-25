@@ -17,7 +17,6 @@ void guestMenu(){
 
         system("cls");
         std::cout<<"1.Reserve Room for a Guest"<<std::endl;
-        std::cout<<"2.Handle Check-in for Guest"<<std::endl;
         std::cout<<"3.Exit"<<std::endl;
 
         int choice;
@@ -28,10 +27,7 @@ void guestMenu(){
             case 1:
                 //Reserve room
                 break;
-            case 2:
-                //checkin
-                break;
-             case 3:
+             case 2:
                 //exit
                 exit_flag=true;
                 break;
@@ -88,10 +84,10 @@ void adminMenu(Hotel& hotel){
                 hotelservice.deleteRoom();
                 break;
             case 3:
-                //Reserve room
+                hotelservice.searchRooms();
                 break;
              case 4:
-                //checkin
+
                 break;
             case 5:
                 //checkout
