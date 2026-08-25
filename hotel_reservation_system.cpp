@@ -10,9 +10,10 @@
 #include "services/auth_service.h"
 #include "models/admin_details.h"
 
-void guestMenu(){
+void guestMenu(Hotel& hotel){
 
     bool exit_flag = false;
+    HotelService hotelservice(hotel);
     while(!exit_flag){
 
         system("cls");
@@ -25,10 +26,9 @@ void guestMenu(){
          switch(choice){
 
             case 1:
-                //Reserve room
+                hotelservice.searchRooms();
                 break;
              case 2:
-                //exit
                 exit_flag=true;
                 break;
             default:
@@ -87,13 +87,13 @@ void adminMenu(Hotel& hotel){
                 hotelservice.searchRooms();
                 break;
              case 4:
-
+                hotelservice.setCheckInStatus();
                 break;
             case 5:
-                //checkout
+                hotelservice.setCheckOutStatus();
                 break;
             case 6:
-                 //report
+                 hotelservice.generateReport();
                 break;
             case 7:
                 //log msg
@@ -132,7 +132,7 @@ void showMainMenu(Hotel& hotel){
                 }
                 break;
             case 2:
-                guestMenu();
+                guestMenu(hotel);
                 break;
             case 3:
                 exit_flag=true;

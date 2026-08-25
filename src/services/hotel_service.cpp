@@ -15,6 +15,7 @@
 #include "models/room_category.h"
 #include "enums/reservation_status.h"
 #include "services/auth_service.h"
+#include "enums/reservation_status.h"
 
 bool checkRoom(int room_number,std::vector<Room*>& available_rooms){
        for(auto room:available_rooms){
@@ -238,7 +239,13 @@ void HotelService::setCheckInStatus(){
 
 }
 
-void HotelService::setCheckOutStatus(int reservation_id){
+void HotelService::setCheckOutStatus(){
+
+        int reservation_id;
+        std::cout<<"Enter Your Reservation Id:";
+        std::cin>>reservation_id;
+        std::cout<<std::endl;
+
 
         std::vector<Reservation*> reservations=hotel.getReservations();
 
@@ -307,5 +314,40 @@ void HotelService::deleteRoom(){
     }
     std::cout<<"The Paticular Cannot be Found Please Enter a Valid room Number"<<std::endl;
 }
-//void generateReport();
+void HotelService::generateReport(){
+
+    std::vector<Reservation*>reservations=hotel.getReservations();
+
+    int total_reservation=reservations.size();
+
+    int cancelled_reservations=0,current_reservations=0,current_check_in=0,current_check_out=0;
+
+    for(auto reservation : reservations){
+
+        if(reservation->getReservationStatus()==ReservationStatus::CANCELLED){
+            cancelled_reservations++;
+        }
+        else if(reservation->getReservationStatus()==ReservationStatus::CHECKED_IN){
+            current_check_in++;
+        }
+        else if(reservation->getReservationStatus()==ReservationStatus::CHECKED_OUT){
+            current_check_out++;
+        }
+        else if(reservation->getReservationStatus()==ReservationStatus::RESERVED){
+            current_reservations++;
+        }
+
+
+    }
+         std::cout<<"REPORT OF ABC HOTEL"<<std::endl;
+         std::cout<<"Total Number of Reservation: "<<total_reservation<<std::endl;
+         std::cout<<"Current Active Reservation:"<<current_reservations<<std::endl;
+         std::cout<<"Current Active CHECK-IN:"<<current_check_in<<std::endl;
+         std::cout<<"Current Active CHECK_OUT:"<<current_check_out<<std::endl;
+         std::cout<<"Cancellations:"<<cancelled_reservations<<std::endl;
+         std::cout<<"Reservation to CHECK-IN Percentage "<<(total_reservation-cancelled_reservations)*100<<std::endl;
+
+
+
+}
 
