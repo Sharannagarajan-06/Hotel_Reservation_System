@@ -1,0 +1,13 @@
+//
+// Created by asus on 8/25/2026.
+//
+
+#ifndef HOTELRESERVATIONSYSTEM_USER_ROLES_H
+#define HOTELRESERVATIONSYSTEM_USER_ROLES_H
+
+enum class UserRoles{
+    ADMIN,
+    GUEST
+
+};
+#endif //HOTELRESERVATIONSYSTEM_USER_ROLES_H

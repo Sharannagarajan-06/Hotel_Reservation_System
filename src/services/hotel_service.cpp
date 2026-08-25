@@ -61,7 +61,7 @@ void HotelService::reserveRoom(RoomNames room_names,
 
        //name,phno,email
        GuestDetails* guest= new GuestDetails(guest_name,guest_phone_number,guest_email);
-       Reservation* reservation = new Reservation(check_in,check_out,room_number,guest->getGuestId());
+       Reservation* reservation = new Reservation(check_in,check_out,room_number,guest->getUserId());
        availability_index.updateAvailability(room_number,check_in,check_out);
        hotel.addReservation(reservation);
 

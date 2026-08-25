@@ -3,29 +3,30 @@
 //
 
 #include "models/guest_details.h"
+#include "enums/user_roles.h"
 #include <string>
 
 /* This class Contains the defenitions of the fucntions declared in the guest_details.h file */
 
 
-GuestDetails::GuestDetails( std::string guest_name,
-    std::string guest_phone_number,
-    std::string guest_email){
-        this->guest_id=GuestDetails::next_guest_id++;
-        this->guest_name=guest_name;
-        this->guest_phone_number=guest_phone_number;
-        this->guest_email=guest_email;
-}
+GuestDetails::GuestDetails(std::string user_name,
+    std::string user_phone_number,
+    std::string user_email,
+    std::string user_password):UserDetails(
+    user_name,
+    user_phone_number,
+    user_email,
+    UserRoles::GUEST,
+    user_password
+){}
 
-int GuestDetails::getGuestId(){
-    return this->guest_id;
-}
-std::string GuestDetails::getGuestName(){
-    return this->guest_name;
-}
-std::string GuestDetails::getGuestPhoneNumber(){
-    return this->guest_phone_number;
-}
-std::string GuestDetails::getGuestEmail(){
-    return this->guest_email;
-}
+GuestDetails::GuestDetails(std::string user_name,
+    std::string user_phone_number,
+    std::string user_email):UserDetails(
+    user_name,
+    user_phone_number,
+    user_email,
+    UserRoles::GUEST,
+    "guest@123"
+
+){}

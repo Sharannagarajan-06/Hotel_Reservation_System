@@ -5,39 +5,28 @@
 #ifndef HOTELRESERVATIONSYSTEM_GUEST_DETAILS_H
 #define HOTELRESERVATIONSYSTEM_GUEST_DETAILS_H
 #include <string>
+#include "enums/user_roles.h"
+#include "models/user_details.h"
+
 
 /* This isthe guest_details which has the declearation for the class such as guest name , phone number and etc..*/
 
 
-class GuestDetails {
+class GuestDetails :public UserDetails {
 
-private :
-
-    inline static int next_guest_id = 1;
-    int guest_id;
-    std::string guest_name;
-    std::string guest_phone_number;
-    std::string guest_email;
 
 public:
 
 //Constructor for Intializing the GuestDetails
 
-    GuestDetails( std::string guest_name,
-    std::string guest_phone_number,
-    std::string guest_email);
+    GuestDetails( std::string user_name,
+    std::string user_phone_number,
+    std::string user_email,
+    std::string password);
 
-//Getter for Getting the Guest ID
-    int getGuestId();
-
-//Getter for Getting the Guest Name
-    std::string getGuestName();
-
-// Getter for getting the GuestPhoneNumber
-    std::string getGuestPhoneNumber();
-
-// Getter for Getting the GuestEmail
-    std::string getGuestEmail();
+GuestDetails(std::string user_name,
+    std::string user_phone_number,
+    std::string user_email);
 
 };
 
