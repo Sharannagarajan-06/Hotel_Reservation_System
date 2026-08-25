@@ -7,23 +7,23 @@
 
 #include <vector>
 #include "models/rooms.h"
-#include "models/guest_details.h"
-#include "models/reservation.h"
 
+#include "models/reservation.h"
+#include "models/user_details.h"
 class Hotel {
 
 private:
     std::vector<Room*>rooms;
-    std::vector<GuestDetails*>guests;
+    std::vector<UserDetails*>users;
     std::vector<Reservation*>reservations;
 
 public:
     std::vector<Room*> getRooms();
     void addRoom(Room* room);
     bool removeRoom(Room* room);
-    std::vector<GuestDetails*>getGuests();
-    void addGuest(GuestDetails* guest);
-    bool removeGuest(GuestDetails* guest);
+    std::vector<UserDetails*>getUsers();
+    void adduser(UserDetails* user);
+    bool removeuser(UserDetails* user);
     void addReservation(Reservation * reservation);
     std::vector<Reservation*> getReservations();
 

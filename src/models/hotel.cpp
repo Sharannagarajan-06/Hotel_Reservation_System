@@ -5,7 +5,7 @@
 #include <vector>
 #include "models/hotel.h"
 #include "models/rooms.h"
-#include "models/guest_details.h"
+#include "models/user_details.h"
 
 
     void Hotel::addRoom(Room* room){
@@ -22,14 +22,14 @@
         return false;
     }
 
-    void Hotel::addGuest(GuestDetails* guest){
-          Hotel::guests.push_back(guest);
+    void Hotel::adduser(UserDetails* user){
+          Hotel::users.push_back(user);
     }
 
-    bool Hotel::removeGuest(GuestDetails* guest){
-        for (auto it=guests.begin(); it != guests.end(); ++it) {
-            if (*it==guest) {
-                guests.erase(it);
+    bool Hotel::removeuser(UserDetails* user){
+        for (auto it=users.begin(); it != users.end(); ++it) {
+            if (*it==user) {
+                users.erase(it);
                 return true;
             }
         }
@@ -40,8 +40,8 @@
             return Hotel::rooms;
     }
 
-    std::vector<GuestDetails*> Hotel::getGuests(){
-        return Hotel::guests;
+    std::vector<UserDetails*> Hotel::getUsers(){
+        return Hotel::users;
     }
 
     void Hotel::addReservation(Reservation * reservation){

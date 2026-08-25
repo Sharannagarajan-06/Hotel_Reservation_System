@@ -11,34 +11,37 @@ UserDetails::UserDetails(
     std::string user_phone_number,
     std::string user_email,
     UserRoles user_role,
-    std::string password
+    std::string user_password
 )
     : user_id(next_user_id++),
       user_name(std::move(user_name)),
       user_phone_number(std::move(user_phone_number)),
       user_email(std::move(user_email)),
       user_role(user_role),
-      password(std::move(password))
+      user_password(user_password)
 {
 }
 
 
 int UserDetails::getUserId()  {
-    return user_id;
+    return this->user_id;
 }
 
 std::string UserDetails::getUserName()  {
-    return user_name;
+    return this->user_name;
 }
 
 std::string UserDetails::getUserPhoneNumber()  {
-    return user_phone_number;
+    return this->user_phone_number;
 }
 
 std::string UserDetails::getUserEmail()  {
-    return user_email;
+    return this->user_email;
 }
 
 UserRoles UserDetails::getUserRole()  {
-    return user_role;
+    return this->user_role;
+}
+std::string UserDetails::getUserPassword(){
+    return this->user_password;
 }

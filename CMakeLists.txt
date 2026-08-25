@@ -19,6 +19,8 @@ add_library(reservation STATIC src/models/reservation.cpp)
 add_library( hotelservice STATIC    src/services/hotel_service.cpp
                                     src/models/availabilityindex.cpp)
 
+add_library(authservice STATIC src/services/auth_service.cpp)
+
 # Include .h files directory
 target_include_directories(rooms PUBLIC include)
 
@@ -30,10 +32,13 @@ target_include_directories(reservation PUBLIC include)
 
 target_include_directories(hotelservice PUBLIC include)
 
+target_include_directories(authservice PUBLIC include)
+
 target_link_libraries(hotelservice PUBLIC   rooms
                                             user
                                             hotel
-                                            reservation)
+                                            reservation
+                                            authservice)
 add_executable(hotel_reservation_system hotel_reservation_system.cpp)
 
 target_link_libraries(hotel_reservation_system

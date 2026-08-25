@@ -17,7 +17,7 @@ private :
     std::string user_phone_number;
     std::string user_email;
     UserRoles user_role;
-    std::string password;
+    std::string user_password;
 
 public:
 
@@ -26,7 +26,7 @@ public:
     UserDetails( std::string user_name,
     std::string user_phone_number,
     std::string user_email,UserRoles user_role,
-    std::string password);
+    std::string user_password);
 
     int getUserId() ;
 
@@ -37,6 +37,8 @@ public:
     std::string getUserEmail();
 
     UserRoles getUserRole();
+
+    std::string getUserPassword();
 
     
 };
