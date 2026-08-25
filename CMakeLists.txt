@@ -25,6 +25,10 @@ add_library(authservice STATIC src/services/auth_service.cpp)
 add_library(loggerservice STATIC src/services/logger_service.cpp
                                 src/models/logger.cpp)
 
+add_library(billing STATIC
+        src/models/standard_billing.cpp
+        src/models/seasonal_billing.cpp)
+
 # Include .h files directory
 target_include_directories(rooms PUBLIC include)
 
@@ -40,12 +44,15 @@ target_include_directories(authservice PUBLIC include)
 
 target_include_directories(loggerservice PUBLIC include)
 
+target_include_directories(billing PUBLIC include)
+
 target_link_libraries(hotelservice PUBLIC   rooms
                                             user
                                             hotel
                                             reservation
                                             authservice
-                                            loggerservice)
+                                            loggerservice
+                                            billing)
 add_executable(hotel_reservation_system hotel_reservation_system.cpp)
 
 target_link_libraries(hotel_reservation_system

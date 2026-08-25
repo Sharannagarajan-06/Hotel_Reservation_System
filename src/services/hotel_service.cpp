@@ -18,6 +18,10 @@
 #include "enums/reservation_status.h"
 #include "services/logger_service.h"
 #include "enums/log_message_type.h"
+#include <memory>
+#include "models/seasonal_billing.h"
+#include "models/standard_billing.h"
+#include "models/billing_strategy.h"
 
 bool checkRoom(int room_number,std::vector<Room*>& available_rooms){
        for(auto room:available_rooms){
@@ -275,6 +279,27 @@ void HotelService::setCheckOutStatus(){
         if(room->getRoomStatus()==false)std::cout<<"The Room is Not Been ocuupied"<<std::endl;
 
 		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
+
+        std::cout<<"Enter the New Billing Statergy"<<std::endl;
+        std::cout<<"1.Seasonal Billing"<<std::endl;
+        std::cout<<"2.Standard Billing"<<std::endl;
+        int choice ;
+        std::cin>>choice;
+        std::unique_ptr<BillingStrategy> billStrategy;
+        switch(choice){
+            case 1:
+                billStrategy = std::make_unique<SeasonalBilling>();
+                break;
+            case 2:
+               billStrategy = std::make_unique<StandardBilling>();
+                break;
+            default:
+                std::cout<<"Enter a Valid choice"<<std::endl;
+                break;
+        }
+        double bill = billStrategy->calculateBill(
+                                            reservation,
+                                            room->getRoomCategory()->getRoomBaseRate());
 
         reservation->setReservationStatus(ReservationStatus::CHECKED_OUT);
 
