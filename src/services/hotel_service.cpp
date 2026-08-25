@@ -22,6 +22,8 @@
 #include "models/seasonal_billing.h"
 #include "models/standard_billing.h"
 #include "models/billing_strategy.h"
+#include <mutex>
+#include <memory>
 
 bool checkRoom(int room_number,std::vector<Room*>& available_rooms){
        for(auto room:available_rooms){
@@ -55,17 +57,17 @@ void HotelService::searchRooms(){
     std::cout<<"The Rooms that are available are :"<<std::endl;
 
     std::cout<<"1.Standard\n"<<"Base Rate:"<<
-    room_catlog.getCategory(RoomNames::STANDARD).getRoomBaseRate()<<"\n"
-    "Capacity:"<<room_catlog.getCategory(RoomNames::STANDARD).getRoomCapacity()<<std::endl;
+    room_catlog.getCategory(RoomNames::STANDARD)->getRoomBaseRate()<<"\n"
+    "Capacity:"<<room_catlog.getCategory(RoomNames::STANDARD)->getRoomCapacity()<<std::endl;
 
     std::cout<<"2.Deluxe\n"<<"Base Rate:"<<
-    room_catlog.getCategory(RoomNames::DELUXE).getRoomBaseRate()<<"\n"
-    "Capacity:"<<room_catlog.getCategory(RoomNames::DELUXE).getRoomCapacity()<<std::endl;
+    room_catlog.getCategory(RoomNames::DELUXE)->getRoomBaseRate()<<"\n"
+    "Capacity:"<<room_catlog.getCategory(RoomNames::DELUXE)->getRoomCapacity()<<std::endl;
 
 
     std::cout<<"3.Suite\n"<<"Base Rate:"<<
-    room_catlog.getCategory(RoomNames::SUITE).getRoomBaseRate()<<"\n"
-    "Capacity:"<<room_catlog.getCategory(RoomNames::SUITE).getRoomCapacity()<<std::endl;
+    room_catlog.getCategory(RoomNames::SUITE)->getRoomBaseRate()<<"\n"
+    "Capacity:"<<room_catlog.getCategory(RoomNames::SUITE)->getRoomCapacity()<<std::endl;
 
     std::cout<<"Enter your Choice"<<std::endl;
     int choice;
@@ -96,14 +98,14 @@ void HotelService::searchRooms(){
         std::chrono::year_month_day check_in=getChronoDateFormat(check_in_date);
        std::chrono::year_month_day check_out=getChronoDateFormat(check_out_date);
 
-       std::vector<Room*>rooms=hotel.getRooms();
+       auto& rooms=hotel.getRooms();
        std::vector<Room*>available_rooms;
 
-        for(auto room:rooms){
+        for(auto& room:rooms){
                if(room->getRoomCategory()->getRoomName()==room_names &&
                         availability_index.isFree(room->getRoomNumber(),check_in,check_out)){
 
-                               available_rooms.push_back(room);
+                               available_rooms.push_back(room.get());
                }
         }
 
@@ -128,12 +130,13 @@ void HotelService::reserveRoom(int room_number,
     std::chrono::year_month_day check_in,
     std::chrono::year_month_day check_out){
 
+       std::mutex reservation_mutex;
        std::cout<<"1.Exisisting User"<<std::endl;
        std::cout<<"2.New User"<<std::endl;
 
        std::string guest_email,guest_password;
-       UserDetails* guest=NULL;
 
+       UserDetails* guest_ptr;
     bool exit_flag=false;
 
     while(!exit_flag){
@@ -177,22 +180,32 @@ void HotelService::reserveRoom(int room_number,
            std::cout<<"Enter Your Email";
            getline(std::cin,guest_email);
            std::cout<<std::endl;
-           guest= new GuestDetails(guest_name,guest_phone_number,guest_email);
-           hotel.adduser(guest);
+
+           auto guest = std::make_unique<GuestDetails>(
+                            guest_name,
+                            guest_phone_number,
+                            guest_email);
+           guest_ptr = guest.get();
+           hotel.adduser(std::move(guest));
            exit_flag=true;
         }
     }
 }
-
-       Reservation* reservation = new Reservation(check_in,check_out,room_number,guest->getUserId());
+       std::lock_guard<std::mutex> lock(reservation_mutex);
+        if (!availability_index.isFree(room_number,check_in,check_out)){
+            std::cout << "Room Has Already Been booked";
+            return;
+        }
+       auto reservation = std::make_unique<Reservation>(check_in,check_out,room_number,guest_ptr->getUserId());
+        Reservation* reservation_ptr =reservation.get();
        availability_index.updateAvailability(room_number,check_in,check_out);
-       hotel.addReservation(reservation);
+       hotel.addReservation(std::move(reservation));
 
-       loggerservice.addLog(new Logger(guest->getUserId(),reservation->getReservationId(),
+       loggerservice.addLog(std::make_unique<Logger>(guest_ptr->getUserId(),reservation_ptr->getReservationId(),
                         LogMessageType::BOOKING));
 
 		std::cout<<"Your Rooms has Been Reserved with the booking Id:"<<
-                            reservation->getReservationId()<<" "<<std::endl;
+                            reservation_ptr->getReservationId()<<" "<<std::endl;
 
 }
 
@@ -203,7 +216,7 @@ void HotelService::cancelReservedRoom(){
         std::cin>>reservation_id;
         std::cout<<std::endl;
 
-		std::vector<Reservation*> reservations=hotel.getReservations();
+		auto& reservations =hotel.getReservations();
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
 
 		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
@@ -215,22 +228,22 @@ void HotelService::cancelReservedRoom(){
 
         std::cout<<"Reservation Cancelled Successfully"<<std::endl;
 
-         loggerservice.addLog(new Logger(reservation->getUserId(),reservation->getReservationId(),
+         loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(),reservation->getReservationId(),
                         LogMessageType::CANCELLATION));
 }
 
-Reservation* HotelService::isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations){
+Reservation* HotelService::isValidReservationid(int reservation_id,std::vector<std::unique_ptr<Reservation>>& reservations){
 
-	for(auto reservation : reservations){
-		if(reservation->getReservationId()==reservation_id) return reservation;
+	for(auto& reservation : reservations){
+		if(reservation->getReservationId()==reservation_id) return reservation.get();
 	}
 	return NULL;
 }
 
-Room* HotelService::findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms){
+Room* HotelService::findRoomByRoomNumber(int room_number,std::vector<std::unique_ptr<Room>>& rooms){
 
-    for(auto room:Rooms){
-        if(room->getRoomNumber()==room_number) return room;
+    for(auto& room:rooms){
+        if(room->getRoomNumber()==room_number) return room.get();
     }
     return NULL;
 }
@@ -241,21 +254,20 @@ void HotelService::setCheckInStatus(){
         std::cin>>reservation_id;
         std::cout<<std::endl;
 
-        std::vector<Reservation*> reservations=hotel.getReservations();
-
-        std::vector<Room*>Rooms=hotel.getRooms();
+        auto& reservations = hotel.getReservations();
+        auto& rooms = hotel.getRooms();
 
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
+		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
 
-        Room*room =findRoomByRoomNumber(reservation->getRoomNumber(),Rooms);
+        Room* room =findRoomByRoomNumber(reservation->getRoomNumber(),rooms);
 
         if(room->getRoomStatus()==true)std::cout<<"The Room is Already Been ocuupied"<<std::endl;
 
-		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
 
         reservation->setReservationStatus(ReservationStatus::CHECKED_IN);
 
-        loggerservice.addLog(new Logger(reservation->getUserId(),reservation->getReservationId(),
+        loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(),reservation->getReservationId(),
                         LogMessageType::CHECK_IN));
 
 }
@@ -268,17 +280,16 @@ void HotelService::setCheckOutStatus(){
         std::cout<<std::endl;
 
 
-        std::vector<Reservation*> reservations=hotel.getReservations();
-
-        std::vector<Room*>Rooms=hotel.getRooms();
+        auto& reservations = hotel.getReservations();
+        auto& rooms = hotel.getRooms();
 
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
+		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
 
-        Room*room =findRoomByRoomNumber(reservation->getRoomNumber(),Rooms);
+        Room*room =findRoomByRoomNumber(reservation->getRoomNumber(),rooms);
 
         if(room->getRoomStatus()==false)std::cout<<"The Room is Not Been ocuupied"<<std::endl;
 
-		if(!reservation) std::cout<<"Enter the valid Reservation Id"<<std::endl;
 
         std::cout<<"Enter the New Billing Statergy"<<std::endl;
         std::cout<<"1.Seasonal Billing"<<std::endl;
@@ -302,8 +313,9 @@ void HotelService::setCheckOutStatus(){
                                             room->getRoomCategory()->getRoomBaseRate());
 
         reservation->setReservationStatus(ReservationStatus::CHECKED_OUT);
-
-        loggerservice.addLog(new Logger(reservation->getUserId(),reservation->getReservationId(),
+        loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(),reservation->getReservationId(),
+                        LogMessageType::BILLING));
+        loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(),reservation->getReservationId(),
                         LogMessageType::CHECK_OUT));
 }
 
@@ -330,9 +342,9 @@ void HotelService::addRoom(){
             std::cout<<"Invalid category\n";
             return;
     }
-    RoomCategory& category=room_catlog.getCategory(category_name);
-    Room* room=new Room(const_cast<RoomCategory*>(&category));
-    hotel.addRoom(room);
+    std::shared_ptr<RoomCategory> category =room_catlog.getCategory(category_name);
+    auto room = std::make_unique<Room>(category);
+    hotel.addRoom(std::move(room));
 
 }
 void HotelService::deleteRoom(){
@@ -341,16 +353,16 @@ void HotelService::deleteRoom(){
     std::cout<<"Enter Your Room Number:";
     std::cin>>room_number;
 
-    std::vector<Room*>rooms=hotel.getRooms();
+    auto& rooms = hotel.getRooms();
 
-    for(auto room:rooms){
+    for(auto& room:rooms){
         if(room->getRoomNumber()==room_number){
             if(room->getRoomStatus()==true){
-            std::cout<<"The Given RoomNumber is Being Currently occupied By guest so it cannotbe deleted"<<std::endl;
+            std::cout<<"The Given RoomNumber is Being Currently occupied By guest so it cannot be deleted"<<std::endl;
              return ;
             }
             else{
-                hotel.removeRoom(room);
+                hotel.removeRoom(room.get());
                 std::cout<<"Room Successfully Removed"<<std::endl;
                 return ;
             }
@@ -360,13 +372,13 @@ void HotelService::deleteRoom(){
 }
 void HotelService::generateReport(){
 
-    std::vector<Reservation*>reservations=hotel.getReservations();
+    auto& reservations = hotel.getReservations();
 
     int total_reservation=reservations.size();
 
     int cancelled_reservations=0,current_reservations=0,current_check_in=0,current_check_out=0;
 
-    for(auto reservation : reservations){
+    for(auto& reservation : reservations){
 
         if(reservation->getReservationStatus()==ReservationStatus::CANCELLED){
             cancelled_reservations++;

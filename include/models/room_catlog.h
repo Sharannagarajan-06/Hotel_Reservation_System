@@ -7,15 +7,16 @@
 #include "models/room_category.h"
 #include "enums/room_name.h"
 #include <map>
+#include <memory>
 
 class RoomCatlog {
 private:
-    std::map<RoomNames,RoomCategory>categories;
+    std::map<RoomNames,std::shared_ptr<RoomCategory>>categories;
 
 public:
     RoomCatlog();
 
-    RoomCategory& getCategory(RoomNames name);
+    std::shared_ptr<RoomCategory> getCategory(RoomNames name);
 };
 
 

@@ -152,11 +152,11 @@ int main(){
 
    Hotel hotel;
     LoggerService loggerservice;
-    AdminDetails* admin= new AdminDetails("Sharan",
+    auto admin= std::make_unique<AdminDetails>("Sharan",
     "9345480377",
     "admin@gmail.com",
      "123");
-    hotel.adduser(admin);
+    hotel.adduser(std::move(admin));
    showMainMenu(hotel,loggerservice);
 
 

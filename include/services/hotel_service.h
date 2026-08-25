@@ -17,7 +17,7 @@ private:
         Hotel& hotel;
         AvailabilityIndex  availability_index;
         RoomCatlog room_catlog;
-        LoggerService loggerservice;
+        LoggerService& loggerservice;
 
 
 public:
@@ -28,9 +28,9 @@ public:
         std::chrono::year_month_day check_out);
 
 		void cancelReservedRoom();
-        Reservation* isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations);
+        Reservation* isValidReservationid(int reservation_id,std::vector<std::unique_ptr<Reservation>>& reservations);
         void setCheckInStatus();
-        Room* findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms);
+        Room* findRoomByRoomNumber(int room_number,std::vector<std::unique_ptr<Room>>& rooms);
         void setCheckOutStatus();
 
         void addRoom();

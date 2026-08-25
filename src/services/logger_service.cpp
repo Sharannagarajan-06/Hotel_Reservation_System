@@ -6,6 +6,7 @@
 #include "enums/log_message_type.h"
 #include <iostream>
 #include <string>
+#include <memory>
 
 
 std::string LoggerService::printLogTypes(LogMessageType log_type){
@@ -34,7 +35,7 @@ std::string LoggerService::printLogTypes(LogMessageType log_type){
     return "";
 }
 void LoggerService::printLogs(){
-        for(auto log:logs){
+        for(auto& log:logs){
                 std::cout<<"Guest Id:"<<log->getGuestId()<<std::endl;
                 std::cout<<"Reservation Id:"<<log->getReservationId()<<std::endl;
                 std::cout<<"Log Type:"<<printLogTypes(log->getLogType())<<std::endl;
@@ -42,6 +43,6 @@ void LoggerService::printLogs(){
         }
 }
 
-void LoggerService::addLog(Logger* log){
-        logs.push_back(log);
+void LoggerService::addLog(std::unique_ptr<Logger> log){
+        logs.push_back(std::move(log));
 }

@@ -7,12 +7,12 @@
 
 // This file is the implementation of the declerations in the file named rooms.h
 
-Room::Room(RoomCategory* room_category){
+Room::Room(std::shared_ptr<RoomCategory> room_category){
         this->room_number=next_room_number++;
         this->room_category=room_category;
         this->room_status=false;
 }
-RoomCategory* Room::getRoomCategory() {
+std::shared_ptr<RoomCategory> Room::getRoomCategory() {
     return this->room_category;
 }
 

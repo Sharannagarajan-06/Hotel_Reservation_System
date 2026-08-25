@@ -6,18 +6,19 @@
 #define HOTELRESERVATIONSYSTEM_Room_H
 
 #include "models/room_category.h"
+#include <memory>
 
 // This is class is a room entity which conatins the propertites of Room such as number , roomcategory ad its status
 class Room {
 private:
         inline static int next_room_number=1;
         int room_number;
-        RoomCategory * room_category;
+        std::shared_ptr<RoomCategory> room_category;
         bool room_status;
 public:
-        Room(RoomCategory * room_category);
+        Room(std::shared_ptr<RoomCategory> room_category);
 
-		RoomCategory* getRoomCategory();
+		std::shared_ptr<RoomCategory> getRoomCategory();
         int getRoomNumber();
         bool getRoomStatus();
         void setRoomStatus();

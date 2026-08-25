@@ -10,22 +10,26 @@
 
 #include "models/reservation.h"
 #include "models/user_details.h"
+#include <memory>
+
 class Hotel {
 
 private:
-    std::vector<Room*>rooms;
-    std::vector<UserDetails*>users;
-    std::vector<Reservation*>reservations;
+    std::vector<std::unique_ptr<Room>>rooms;
+    std::vector<std::unique_ptr<UserDetails>>users;
+    std::vector<std::unique_ptr<Reservation>>reservations;
 
 public:
-    std::vector<Room*> getRooms();
-    void addRoom(Room* room);
+    std::vector<std::unique_ptr<Room>>&getRooms();
+    void addRoom(std::unique_ptr<Room> room);
     bool removeRoom(Room* room);
-    std::vector<UserDetails*>getUsers();
-    void adduser(UserDetails* user);
+
+    std::vector<std::unique_ptr<UserDetails>>&getUsers();
+    void adduser(std::unique_ptr<UserDetails> user);
     bool removeuser(UserDetails* user);
-    void addReservation(Reservation * reservation);
-    std::vector<Reservation*> getReservations();
+
+    void addReservation(std::unique_ptr<Reservation> reservation);
+    std::vector<std::unique_ptr<Reservation>>& getReservations();
 
 };
 

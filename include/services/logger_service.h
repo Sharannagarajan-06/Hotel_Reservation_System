@@ -12,10 +12,10 @@
 class LoggerService {
 
 private:
-    std::vector<Logger*>logs;
+    std::vector<std::unique_ptr<Logger>>logs;
 public:
     void printLogs();
-    void addLog(Logger* log);
+    void addLog(std::unique_ptr<Logger> log);
     std::string printLogTypes(LogMessageType log_type);
 };
 

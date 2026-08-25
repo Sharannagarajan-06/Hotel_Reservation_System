@@ -7,10 +7,10 @@
 AuthService::AuthService(Hotel& hotel):hotel(hotel){}
 
 UserDetails* AuthService::login(std::string email , std::string password){
-    std::vector<UserDetails*>users=hotel.getUsers();
+    auto& users = hotel.getUsers();
 
-    for(auto user:users){
-        if(user->getUserEmail()==email &&user->getUserPassword()==password)  return user;
+    for(auto& user:users){
+        if(user->getUserEmail()==email &&user->getUserPassword()==password)  return user.get();
     }
     return NULL;
 }
