@@ -16,6 +16,8 @@
 #include "enums/reservation_status.h"
 #include "services/auth_service.h"
 #include "enums/reservation_status.h"
+#include "services/logger_service.h"
+#include "enums/log_message_type.h"
 
 bool checkRoom(int room_number,std::vector<Room*>& available_rooms){
        for(auto room:available_rooms){
@@ -25,8 +27,8 @@ bool checkRoom(int room_number,std::vector<Room*>& available_rooms){
 }
 
 
-HotelService::HotelService(Hotel& hotel)
-    : hotel(hotel) {
+HotelService::HotelService(Hotel& hotel , LoggerService& loggerservice)
+    : hotel(hotel),loggerservice(loggerservice) {
 }
 
 std::chrono::year_month_day HotelService::getChronoDateFormat(std::string& date){
@@ -115,6 +117,7 @@ void HotelService::searchRooms(){
        int room_number;
        std::cin>>room_number;
        reserveRoom(room_number,check_in,check_out);
+
 }
 
 void HotelService::reserveRoom(int room_number,
@@ -181,11 +184,20 @@ void HotelService::reserveRoom(int room_number,
        availability_index.updateAvailability(room_number,check_in,check_out);
        hotel.addReservation(reservation);
 
+       loggerservice.addLog(new Logger(guest->getUserId(),reservation->getReservationId(),
+                        LogMessageType::BOOKING));
+
 		std::cout<<"Your Rooms has Been Reserved with the booking Id:"<<
                             reservation->getReservationId()<<" "<<std::endl;
+
 }
 
-void HotelService::cancelReservedRoom(int reservation_id){
+void HotelService::cancelReservedRoom(){
+
+        int reservation_id;
+        std::cout<<"Enter Your Reservation Id:";
+        std::cin>>reservation_id;
+        std::cout<<std::endl;
 
 		std::vector<Reservation*> reservations=hotel.getReservations();
 		Reservation* reservation=isValidReservationid(reservation_id,reservations);
@@ -199,6 +211,8 @@ void HotelService::cancelReservedRoom(int reservation_id){
 
         std::cout<<"Reservation Cancelled Successfully"<<std::endl;
 
+         loggerservice.addLog(new Logger(reservation->getUserId(),reservation->getReservationId(),
+                        LogMessageType::CANCELLATION));
 }
 
 Reservation* HotelService::isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations){
@@ -237,6 +251,9 @@ void HotelService::setCheckInStatus(){
 
         reservation->setReservationStatus(ReservationStatus::CHECKED_IN);
 
+        loggerservice.addLog(new Logger(reservation->getUserId(),reservation->getReservationId(),
+                        LogMessageType::CHECK_IN));
+
 }
 
 void HotelService::setCheckOutStatus(){
@@ -261,6 +278,8 @@ void HotelService::setCheckOutStatus(){
 
         reservation->setReservationStatus(ReservationStatus::CHECKED_OUT);
 
+        loggerservice.addLog(new Logger(reservation->getUserId(),reservation->getReservationId(),
+                        LogMessageType::CHECK_OUT));
 }
 
 void HotelService::addRoom(){
@@ -312,7 +331,7 @@ void HotelService::deleteRoom(){
             }
         }
     }
-    std::cout<<"The Paticular Cannot be Found Please Enter a Valid room Number"<<std::endl;
+    std::cout<<"The Paticular Room Cannot be Found Please Enter a Valid room Number"<<std::endl;
 }
 void HotelService::generateReport(){
 

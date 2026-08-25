@@ -10,22 +10,24 @@
 #include "models/availabilityindex.h"
 #include "models/room_category.h"
 #include "models/room_catlog.h"
+#include "services/logger_service.h"
 class HotelService {
 
 private:
         Hotel& hotel;
         AvailabilityIndex  availability_index;
         RoomCatlog room_catlog;
+        LoggerService loggerservice;
 
 
 public:
-        HotelService(Hotel& hotel);
+        HotelService(Hotel& hotel , LoggerService& loggerservice);
 
         void reserveRoom(int room_number,
         std::chrono::year_month_day check_in,
         std::chrono::year_month_day check_out);
 
-		void cancelReservedRoom(int reservation_id);
+		void cancelReservedRoom();
         Reservation* isValidReservationid(int reservation_id,std::vector<Reservation*>& reservations);
         void setCheckInStatus();
         Room* findRoomByRoomNumber(int room_number,std::vector<Room*>Rooms);

@@ -42,3 +42,6 @@ Reservation::Reservation(
             return this->room_number;
         }
 
+        int Reservation::getUserId(){
+            return this->guest_id;
+        }

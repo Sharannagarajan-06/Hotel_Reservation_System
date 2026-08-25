@@ -37,6 +37,8 @@ public:
     int getReservationId();
     int getRoomNumber();
 
+    int getUserId();
+
 };
 
 

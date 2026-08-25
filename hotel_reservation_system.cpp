@@ -9,15 +9,16 @@
 #include "services/hotel_service.h"
 #include "services/auth_service.h"
 #include "models/admin_details.h"
-
-void guestMenu(Hotel& hotel){
+#include "services/logger_service.h"
+void guestMenu(Hotel& hotel,LoggerService& loggerservice){
 
     bool exit_flag = false;
-    HotelService hotelservice(hotel);
+    HotelService hotelservice(hotel,loggerservice);
     while(!exit_flag){
 
         system("cls");
-        std::cout<<"1.Reserve Room for a Guest"<<std::endl;
+        std::cout<<"1.Reserve Room "<<std::endl;
+        std::cout<<"2.Cancel Reserved Room"<<std::endl;
         std::cout<<"3.Exit"<<std::endl;
 
         int choice;
@@ -28,7 +29,9 @@ void guestMenu(Hotel& hotel){
             case 1:
                 hotelservice.searchRooms();
                 break;
-             case 2:
+            case 2:
+                hotelservice.cancelReservedRoom();
+             case 3:
                 exit_flag=true;
                 break;
             default:
@@ -57,8 +60,9 @@ bool verifyAdmin(Hotel& hotel){
     return false;
 
 }
-void adminMenu(Hotel& hotel){
+void adminMenu(Hotel& hotel,LoggerService& loggerservice){
     bool exit_flag = false;
+    HotelService hotelservice(hotel,loggerservice);
 
      while(!exit_flag){
 
@@ -74,7 +78,7 @@ void adminMenu(Hotel& hotel){
 
         int choice;
         std::cin>>choice;
-        HotelService hotelservice(hotel);
+
          switch(choice){
 
             case 1:
@@ -96,7 +100,7 @@ void adminMenu(Hotel& hotel){
                  hotelservice.generateReport();
                 break;
             case 7:
-                //log msg
+                loggerservice.printLogs();
                 break;
             case 8:
                   exit_flag=true;
@@ -107,7 +111,7 @@ void adminMenu(Hotel& hotel){
          }
     }
 }
-void showMainMenu(Hotel& hotel){
+void showMainMenu(Hotel& hotel,LoggerService& loggerservice){
 
     bool exit_flag = false;
     while(!exit_flag){
@@ -125,14 +129,14 @@ void showMainMenu(Hotel& hotel){
 
             case 1:
                 if(verifyAdmin(hotel)){
-                    adminMenu(hotel);
+                    adminMenu(hotel,loggerservice);
                 }
                 else{
                     std::cout<<"Login failed";
                 }
                 break;
             case 2:
-                guestMenu(hotel);
+                guestMenu(hotel,loggerservice);
                 break;
             case 3:
                 exit_flag=true;
@@ -147,12 +151,13 @@ void showMainMenu(Hotel& hotel){
 int main(){
 
    Hotel hotel;
+    LoggerService loggerservice;
     AdminDetails* admin= new AdminDetails("Sharan",
     "9345480377",
     "admin@gmail.com",
      "123");
     hotel.adduser(admin);
-   showMainMenu(hotel);
+   showMainMenu(hotel,loggerservice);
 
 
 }
