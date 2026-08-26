@@ -1,7 +1,7 @@
 //
 // Created by asus on 8/24/2026.
 //
-
+#include <cctype>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -24,11 +24,13 @@
 #include "models/billing_strategy.h"
 #include <mutex>
 #include <memory>
+#include "exceptions/hotel_exception.h"
+#include "exceptions/user_exception.h"
 #include "exceptions/room_exception.h"
 #include "exceptions/reservation_exception.h"
 #include "exceptions/billing_exception.h"
 #include "exceptions/date_exception.h"
-#include "exceptions/user_exception.h"
+
 
 
 /*
@@ -116,6 +118,26 @@ std::chrono::year_month_day HotelService::getChronoDateFormat(std::string &date)
     return result;
 }
 
+bool HotelService::isValidDateFormat(const std::string& date)
+{
+    if (date.length()!=10)
+        return false;
+
+    if (date[4]!='-'||date[7]!='-')
+        return false;
+
+    for (int i=0;i<date.length();i++)
+    {
+        if (i==4||i==7)
+            continue;
+
+        if (!std::isdigit(date[i]))
+            return false;
+    }
+
+    return true;
+}
+
 /*
     searchRooms() is used to search the available rooms for the paticualr type and date ranges
     and book them using revserveRoom() to reserveRooms it internally uses AvailabilityIndex to
@@ -176,6 +198,10 @@ void HotelService::searchRooms()
     std::cout << "Enter the date for CheckOut:(YYYY-MM-DD)";
     std::cin >> check_out_date;
     std::cout << std::endl;
+    if (!isValidDateFormat(check_in_date)||!isValidDateFormat(check_out_date)){
+        throw InvalidDateException("Invalid date format. Please use YYYY-MM-DD.\n");
+    }
+
 
     std::chrono::year_month_day check_in = getChronoDateFormat(check_in_date);
     std::chrono::year_month_day check_out = getChronoDateFormat(check_out_date);

@@ -15,6 +15,7 @@
 #include "exceptions/room_exception.h"
 #include "exceptions/reservation_exception.h"
 #include "exceptions/billing_exception.h"
+#include "exceptions/date_exception.h"
 
 void guestMenu(Hotel &hotel, LoggerService &loggerservice)
 {
@@ -29,7 +30,7 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
             std::cout << "2.Cancel Reserved Room" << std::endl;
             std::cout << "3.Change Password" << std::endl;
             std::cout << "4.Exit" << std::endl;
-            std::cout<<"Enter You Choice";
+            std::cout << "Enter You Choice";
 
             int choice;
             std::cin >> choice;
@@ -44,9 +45,7 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
                 }
                 catch (const RoomUnavailableException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << e.what() << std::endl;
                 }
                 break;
             case 2:
@@ -56,21 +55,17 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
                 }
                 catch (const ReservationNotFoundException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << e.what() << std::endl;
                 }
                 break;
             case 3:
-               try
+                try
                 {
                     hotelservice.changePassword();
                 }
                 catch (const ReservationNotFoundException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << e.what() << std::endl;
                 }
 
             case 4:
@@ -84,10 +79,7 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
         }
         catch (const HotelException &e)
         {
-
-            std::cout << "\nHotel Error: "
-                      << e.what()
-                      << "\n";
+            std::cerr << e.what() << std::endl;
         }
     }
 }
@@ -122,9 +114,7 @@ bool verifyAdmin(Hotel &hotel)
     }
     catch (const AuthenticationException &e)
     {
-        std::cerr << "Hotel Error: "
-                  << e.what()
-                  << std::endl;
+        std::cerr << e.what() << std::endl;
         return false;
     }
 
@@ -165,9 +155,7 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
                 }
                 catch (const RoomNotFoundException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << e.what() << std::endl;
                 }
 
                 break;
@@ -176,13 +164,18 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
                 {
                     hotelservice.searchRooms();
                 }
-                catch (const HotelException &e)
+                catch (const InvalidDateException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << "Invalid date format: " << e.what() << std::endl;
                 }
-
+                catch (const DateException &e)
+                {
+                    std::cerr << "Invalid date: " << e.what() << std::endl;
+                }
+                catch (const RoomUnavailableException &e)
+                {
+                    std::cerr << "Room unavailable: " << e.what() << std::endl;
+                }
                 break;
             case 4:
                 try
@@ -191,9 +184,7 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
                 }
                 catch (const RoomNotFoundException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << e.what() << std::endl;
                 }
 
                 break;
@@ -204,9 +195,7 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
                 }
                 catch (const RoomNotFoundException &e)
                 {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
+                    std::cerr << e.what() << std::endl;
                 }
 
                 break;
@@ -229,9 +218,7 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
         catch (const HotelException &e)
         {
 
-            std::cout << "\nHotel Error: "
-                      << e.what()
-                      << "\n";
+            std::cerr << e.what() << std::endl;
         }
     }
 }
@@ -269,9 +256,7 @@ void showMainMenu(Hotel &hotel, LoggerService &loggerservice)
             }
             catch (const AuthenticationException &e)
             {
-                std::cerr << "Hotel Error: "
-                          << e.what()
-                          << std::endl;
+                std::cerr << e.what() << std::endl;
             }
 
             break;
@@ -283,9 +268,7 @@ void showMainMenu(Hotel &hotel, LoggerService &loggerservice)
             }
             catch (const HotelException &e)
             {
-                std::cerr << "Hotel Error: "
-                          << e.what()
-                          << std::endl;
+                std::cerr << e.what() << std::endl;
             }
             catch (const std::exception &e)
             {
@@ -318,9 +301,7 @@ int main()
     }
     catch (const HotelException &e)
     {
-        std::cerr << "Hotel Error: "
-                  << e.what()
-                  << std::endl;
+        std::cerr << e.what() << std::endl;
     }
     catch (const std::exception &e)
     {

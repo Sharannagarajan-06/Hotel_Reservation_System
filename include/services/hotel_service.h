@@ -44,7 +44,7 @@ public:
         void setCheckInStatus();
         Room* findRoomByRoomNumber(int room_number,std::vector<std::unique_ptr<Room>>& rooms);
         double setCheckOutStatus();
-
+        bool isValidDateFormat(const std::string& date);
         void addRoom();
         void deleteRoom();
         void generateReport();
