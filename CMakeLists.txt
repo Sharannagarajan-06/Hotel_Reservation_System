@@ -27,7 +27,8 @@ add_library(loggerservice STATIC src/services/logger_service.cpp
 
 add_library(billing STATIC
         src/models/standard_billing.cpp
-        src/models/seasonal_billing.cpp)
+        src/models/seasonal_billing.cpp
+        src/models/billing_strategy.cpp)
 
 # Include .h files directory
 target_include_directories(rooms PUBLIC include)

@@ -7,6 +7,11 @@
 
 #include <string>
 #include "enums/user_roles.h"
+
+/*
+    The userDetails class is the base class of the users it is being further inherited
+        by AdminDetails and GuestDetails to have theri own hireachy works
+*/
 class UserDetails {
     
 private :
@@ -39,6 +44,8 @@ public:
     UserRoles getUserRole();
 
     std::string getUserPassword();
+
+    void setUserPassword(std::string user_password);
 
     
 };

@@ -9,6 +9,10 @@
 #include <vector>
 #include <string>
 
+/*
+    the logger service is used to log all the details and print it
+*/
+
 class LoggerService {
 
 private:

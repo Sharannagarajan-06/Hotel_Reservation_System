@@ -8,6 +8,11 @@
 #include <map>
 #include <chrono>
 #include <set>
+
+/*
+    Availabilty Index is a class that helps to finding the rooms
+    that are available for a paticlaur date without date conflicts
+*/
 class AvailabilityIndex {
 
 private:

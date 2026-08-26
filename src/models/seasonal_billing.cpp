@@ -32,5 +32,6 @@ double SeasonalBilling::calculateBill(
     std::cout<<"Service charges:"<<service_charge<<std::endl;
     std::cout<<"Tax"<<tax<<std::endl;
     std::cout<<"Total"<<final_rate<<std::endl;
+    addRevenue(final_rate);
     return final_rate;
 }

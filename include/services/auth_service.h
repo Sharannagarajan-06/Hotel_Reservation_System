@@ -9,6 +9,10 @@
 #include "models/hotel.h"
 #include "models/user_details.h"
 
+/*
+    The AuthService is responsible for the authentication of the users it uses the
+        Hotel hotel object to get details of the list of users
+*/
 class AuthService{
     Hotel& hotel;
 

@@ -27,7 +27,9 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
         {
             std::cout << "1.Reserve Room " << std::endl;
             std::cout << "2.Cancel Reserved Room" << std::endl;
-            std::cout << "3.Exit" << std::endl;
+            std::cout << "3.Change Password" << std::endl;
+            std::cout << "4.Exit" << std::endl;
+            std::cout<<"Enter You Choice";
 
             int choice;
             std::cin >> choice;
@@ -60,6 +62,18 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
                 }
                 break;
             case 3:
+               try
+                {
+                    hotelservice.changePassword();
+                }
+                catch (const ReservationNotFoundException &e)
+                {
+                    std::cerr << "Hotel Error: "
+                              << e.what()
+                              << std::endl;
+                }
+
+            case 4:
 
                 exit_flag = true;
                 break;
@@ -244,31 +258,22 @@ void showMainMenu(Hotel &hotel, LoggerService &loggerservice)
         {
             try
             {
-<<<<<<< Updated upstream
-                adminMenu(hotel, loggerservice);
-            }
-            else
-            {
-                std::cout << "Login failed";
-            }
-=======
                 if (verifyAdmin(hotel))
                 {
                     adminMenu(hotel, loggerservice);
                 }
                 else
                 {
-                    std::cout << "Login failed"<<std::endl;
+                    std::cout << "Login failed" << std::endl;
                 }
             }
-                catch (const AuthenticationException &e)
-                {
-                    std::cerr << "Hotel Error: "
-                              << e.what()
-                              << std::endl;
-                }
+            catch (const AuthenticationException &e)
+            {
+                std::cerr << "Hotel Error: "
+                          << e.what()
+                          << std::endl;
+            }
 
->>>>>>> Stashed changes
             break;
         }
         case 2:

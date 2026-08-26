@@ -45,3 +45,7 @@ UserRoles UserDetails::getUserRole()  {
 std::string UserDetails::getUserPassword(){
     return this->user_password;
 }
+
+void UserDetails::setUserPassword(std::string user_password){
+    this->user_password=user_password;
+}

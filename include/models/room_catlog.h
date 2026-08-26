@@ -9,6 +9,11 @@
 #include <map>
 #include <memory>
 
+/*
+    The RoomCatlog is used to show list of the type rooms available in the hotel
+
+*/
+
 class RoomCatlog {
 private:
     std::map<RoomNames,std::shared_ptr<RoomCategory>>categories;

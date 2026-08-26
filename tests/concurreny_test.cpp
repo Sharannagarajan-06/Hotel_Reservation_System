@@ -83,7 +83,7 @@ TEST_F(ConcurrencyTest,SameRoomCannotBeDoubleBooked) {
     auto check_in = date(2026,9,1);
     auto check_out = date(2026,9,5);
 
-       std::vector<int>results={false,false,false};
+    std::vector<int>results={false,false,false};
 
     std::thread thread1([&]() {
         results[0] = service.bookRoom(

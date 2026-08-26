@@ -3,6 +3,11 @@
 
 #include "exceptions/hotel_exception.h"
 
+/* This is an UserException class dervied from the hotel exception it has various exceptions
+    related to User */
+
+
+
 class UserException : public HotelException {
 public:
     explicit UserException(const std::string& message)

@@ -4,6 +4,8 @@
 #include <string>
 #include "models/user_details.h"
 #include "enums/user_roles.h"
+
+/* This is class AdminDetils is a dervied class form the UserDetails it used to handle adminAccount*/
 class AdminDetails : public UserDetails {
 
 public:

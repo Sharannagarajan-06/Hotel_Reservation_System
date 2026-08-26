@@ -3,6 +3,9 @@
 
 #include "exceptions/hotel_exception.h"
 
+/* This is an RoomException class dervied from the hotel exception it has various exceptions
+    related to RoomException */
+
 class RoomException:public HotelException {
 public:
     explicit RoomException(const std::string& message)

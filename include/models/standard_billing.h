@@ -3,6 +3,11 @@
 
 #include "models/billing_strategy.h"
 
+/*
+    The StandardBilling is a dervied class of the BillingStrategy 
+        which implements the one virtual method of the BillingStrategy class
+*/
+
 class StandardBilling : public BillingStrategy {
 public:
     double calculateBill(

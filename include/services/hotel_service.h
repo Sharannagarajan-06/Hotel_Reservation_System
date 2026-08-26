@@ -13,6 +13,11 @@
 #include "services/logger_service.h"
 #include <mutex>
 
+/*
+    this class is said to be the Heart of the entire Hotel Reservation system
+        it handles various things such as Reserving a room, handling checkin and checkout and etc..
+*/
+
 class HotelService {
 
 private:
@@ -46,6 +51,7 @@ public:
         void CreateRoomCategoy();
         void searchRooms();
         std::chrono::year_month_day getChronoDateFormat(std::string& date);
+        void changePassword();
 
 };
 

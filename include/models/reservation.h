@@ -7,6 +7,11 @@
 
 #include <chrono>
 #include "enums/reservation_status.h"
+
+/*
+    The Reservation is a templeate for the reservation model it contains reservation id and etc...
+*/
+
 class Reservation {
 
 private:

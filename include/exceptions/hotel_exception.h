@@ -4,6 +4,11 @@
 #include <exception>
 #include <string>
 
+/* This is an HotelException class dervied from the hotel exception it has various exceptions
+    related to HotelException */
+
+
+
 class HotelException : public std::exception {
 private:
     std::string message;

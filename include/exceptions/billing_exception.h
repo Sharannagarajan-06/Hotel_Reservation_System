@@ -4,6 +4,9 @@
 #include "exceptions/hotel_exception.h"
 
 
+/* This is an Billing exception class dervied from the hotel exception it has various exceptions
+    related to billing such as InvalidBillingStrategyException it arises when the billing stratergy is chosen wrongly*/
+
 
 class BillingException:public HotelException {
 public:

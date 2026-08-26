@@ -9,6 +9,11 @@
 #include <iostream>
 #include <chrono>
 
+/*
+    the logger class is used to act as a log msg templeate for the log msg service it includes the
+    guest id, reservation id , log type and timestamp
+*/
+
 class Logger {
 
 private:

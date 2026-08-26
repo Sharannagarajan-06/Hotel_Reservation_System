@@ -12,6 +12,10 @@
 #include "models/user_details.h"
 #include <memory>
 
+/*
+     This class acts like a resource holder it is used to hold list of all rooms,usersand reservation
+*/
+
 class Hotel {
 
 private:

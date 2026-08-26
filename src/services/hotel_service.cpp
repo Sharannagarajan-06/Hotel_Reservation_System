@@ -28,7 +28,16 @@
 #include "exceptions/reservation_exception.h"
 #include "exceptions/billing_exception.h"
 #include "exceptions/date_exception.h"
+#include "exceptions/user_exception.h"
 
+
+/*
+    This Class is the Heart of the Hotel Reservation system this class
+        does a lot of major operations
+*/
+
+
+//the checkRoom() function is used to check whether a room exists or not
 bool checkRoom(int room_number, std::vector<Room *> &available_rooms)
 {
     for (auto room : available_rooms)
@@ -39,10 +48,17 @@ bool checkRoom(int room_number, std::vector<Room *> &available_rooms)
     return false;
 }
 
+//this is an constructor for the HotelServics it takes hotel and Loggerservice object and assign them using constructor
 HotelService::HotelService(Hotel &hotel, LoggerService &loggerservice)
     : hotel(hotel), loggerservice(loggerservice)
 {
 }
+
+
+/*
+    the BookRoom Function is a test function written in the same exact logic of the
+    ReserveRoom to test the threads
+*/
 bool HotelService::bookRoom(int room_number,std::chrono::year_month_day check_in,
             std::chrono::year_month_day check_out,int user_id){
 
@@ -80,6 +96,11 @@ bool HotelService::bookRoom(int room_number,std::chrono::year_month_day check_in
     return true;
 
    }
+
+
+/*
+    getChronoDateFormat() is used to convert the normal string date to chrono format and give output
+*/
 std::chrono::year_month_day HotelService::getChronoDateFormat(std::string &date)
 {
 
@@ -95,6 +116,17 @@ std::chrono::year_month_day HotelService::getChronoDateFormat(std::string &date)
     return result;
 }
 
+/*
+    searchRooms() is used to search the available rooms for the paticualr type and date ranges
+    and book them using revserveRoom() to reserveRooms it internally uses AvailabilityIndex to
+    searching the available Rooms
+
+    The TimeComplexity of the Fucntion is O(M x N)
+
+    NOTE:
+        Considering M=number of rooms
+                    N=number of Bookings made for a room
+*/
 void HotelService::searchRooms()
 {
 
@@ -182,6 +214,11 @@ void HotelService::searchRooms()
     reserveRoom(room_number, check_in, check_out);
 }
 
+/*
+
+The ReservRoom() function is used to reseve a room for a paticular user
+    it also uses lock_guard for supporting multithreading
+*/
 void HotelService::reserveRoom(int room_number,
                                std::chrono::year_month_day check_in,
                                std::chrono::year_month_day check_out)
@@ -266,6 +303,9 @@ void HotelService::reserveRoom(int room_number,
     std::cout << "Your Rooms has Been Reserved with the booking Id:" << reservation_ptr->getReservationId() << " " << std::endl;
 }
 
+/*
+    the Cancel Reservation is used to cancel a Reserved Room using the reservation id
+*/
 void HotelService::cancelReservedRoom()
 {
 
@@ -294,7 +334,10 @@ void HotelService::cancelReservedRoom()
                                                   LogMessageType::CANCELLATION));
 }
 
-Reservation *HotelService::isValidReservationid(int reservation_id, std::vector<std::unique_ptr<Reservation>> &reservations)
+/*
+    isValidReservationid is used to return whether the givem userid is a valid one or not
+*/
+Reservation* HotelService::isValidReservationid(int reservation_id, std::vector<std::unique_ptr<Reservation>> &reservations)
 {
 
     for (auto &reservation : reservations)
@@ -304,8 +347,10 @@ Reservation *HotelService::isValidReservationid(int reservation_id, std::vector<
     }
     return NULL;
 }
-
-Room *HotelService::findRoomByRoomNumber(int room_number, std::vector<std::unique_ptr<Room>> &rooms)
+/*
+    findRoomByRoomNumber is used to get the Room object using the roomid
+*/
+Room* HotelService::findRoomByRoomNumber(int room_number, std::vector<std::unique_ptr<Room>> &rooms)
 {
 
     for (auto &room : rooms)
@@ -315,6 +360,10 @@ Room *HotelService::findRoomByRoomNumber(int room_number, std::vector<std::uniqu
     }
     return NULL;
 }
+
+/*
+    The setCheckInStatus() is used to handle setting checkin status for a user using the reservation id
+*/
 void HotelService::setCheckInStatus()
 {
 
@@ -353,7 +402,11 @@ void HotelService::setCheckInStatus()
 
     std::cout<<"Room Has Been CHECKED-IN Successfully"<<std::endl;
 }
-
+/*
+    The setCheckOutStatus() is used to handle setting
+        checkout status for a user using the reservation id and also to update to display the bill
+        for a person
+*/
 double HotelService::setCheckOutStatus()
 {
 
@@ -402,12 +455,17 @@ double HotelService::setCheckOutStatus()
 
     reservation->setReservationStatus(ReservationStatus::CHECKED_OUT);
     room->setRoomStatus(false);
+
     loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(), reservation->getReservationId(),
                                                   LogMessageType::BILLING));
     loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(), reservation->getReservationId(),
                                                   LogMessageType::CHECK_OUT));
     return bill;
 }
+
+/*
+    addRoom() function is used to create room and add them to the hotel class
+*/
 
 void HotelService::addRoom()
 {
@@ -442,6 +500,10 @@ void HotelService::addRoom()
     hotel.addRoom(std::move(room));
     std::cout << "Room Created Successfully with Room Id: " << room_number << std::endl;
 }
+
+/*
+    deleteRoom() function is used to delete room
+*/
 void HotelService::deleteRoom()
 {
 
@@ -478,9 +540,51 @@ void HotelService::deleteRoom()
     }
     std::cout << "The Paticular Room Cannot be Found Please Enter a Valid room Number" << std::endl;
 }
+
+void HotelService::changePassword()
+{
+    std::string user_email;
+    std::string current_password;
+    std::string new_password;
+    std::string confirm_password;
+
+    std::cout << "Enter Your User email: ";
+    std::cin >> user_email;
+    std::cout << "Enter Your Current Password: ";
+    std::cin >> current_password;
+    AuthService authservice(hotel);
+
+    UserDetails* user = authservice.login(user_email, current_password);
+
+    std::cout << "Enter New Password: ";
+    std::cin >> new_password;
+    std::cout << "Confirm New Password: ";
+    std::cin >> confirm_password;
+
+    if (new_password != confirm_password)
+    {
+        throw UserException(
+            "New passwords does not match"
+        );
+    }
+
+    if (new_password==current_password)
+    {
+        throw UserException(
+            "New password cannot be the same as current password"
+        );
+    }
+    user->setUserPassword(new_password);
+    std::cout << "Password changed successfully!\n";
+}
+
+/*
+    Generate Report is used to generate reports such as total revenue and
+*/
 void HotelService::generateReport()
 {
 
+    StandardBilling billingStrategy;
     auto &reservations = hotel.getReservations();
 
     int total_reservation = reservations.size();
@@ -513,5 +617,6 @@ void HotelService::generateReport()
     std::cout << "Current Active CHECK-IN:" << current_check_in << std::endl;
     std::cout << "Current Active CHECK_OUT:" << current_check_out << std::endl;
     std::cout << "Cancellations:" << cancelled_reservations << std::endl;
-    std::cout << "Reservation to CHECK-IN Percentage " << (total_reservation - cancelled_reservations) * 100 << std::endl;
+    std::cout<<"Total Revenue :"<<billingStrategy.getTotalRevenue()<<std::endl;
+
 }

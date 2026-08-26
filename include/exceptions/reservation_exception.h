@@ -3,6 +3,11 @@
 
 #include "exceptions/hotel_exception.h"
 
+/* This is an ReservationException class dervied from the hotel exception it has various exceptions
+    related to Reservation */
+
+
+
 class ReservationException:public HotelException {
 public:
     explicit ReservationException(const std::string& message)
@@ -31,8 +36,6 @@ public:
 
     ~ReservationNotFoundException()override =default;
 };
-
-
 
 
 
