@@ -36,5 +36,18 @@ public:
 
     ~RoomOccupiedException()override = default;
 };
+class InvalidRoomCategoryException : public HotelException
+{
+public:
+    explicit InvalidRoomCategoryException(const std::string& message)
+        : HotelException(message)
+    {
+    }
+
+    const char* what() const noexcept override
+    {
+        return "Invalid room category";
+    }
+};
 
 #endif

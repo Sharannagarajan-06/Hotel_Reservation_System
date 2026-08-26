@@ -37,6 +37,7 @@ std::string LoggerService::printLogTypes(LogMessageType log_type)
 }
 void LoggerService::printLogs()
 {
+       if(logs.size()==0)std::cout<<"There is No Log Messages"<<std::endl;
        for (auto &log : logs)
        {
               std::cout << "Guest Id:" << log->getGuestId() << std::endl;
