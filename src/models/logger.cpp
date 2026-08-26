@@ -25,4 +25,4 @@
         this->reservation_id=reservation_id,
         this->log_type=log_type,
         this->timestamp = std::chrono::system_clock::now();
-}
+    }

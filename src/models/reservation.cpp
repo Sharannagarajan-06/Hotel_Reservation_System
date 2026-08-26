@@ -5,11 +5,17 @@
 #include <chrono>
 #include "models/reservation.h"
 #include "enums/reservation_status.h"
+#include "exceptions/reservation_exception.h"
 
 Reservation::Reservation(
     std::chrono::year_month_day check_in,
     std::chrono::year_month_day check_out,
     int room_number,int guest_id){
+        if(check_in>=check_out){
+            throw InvalidReservationException(
+                "Check-out date must be after check-in date"
+            );
+        }
         this->reservation_id=Reservation::next_reservation_id++;
         this->check_in=check_in;
         this->check_out=check_out;

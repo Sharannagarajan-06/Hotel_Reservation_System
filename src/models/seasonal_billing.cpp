@@ -1,6 +1,6 @@
 #include "models/seasonal_billing.h"
 #include "models/reservation.h"
-
+#include <iostream>
 #include <chrono>
 
 double SeasonalBilling::calculateBill(
@@ -28,5 +28,9 @@ double SeasonalBilling::calculateBill(
     double final_rate =
         2 * (total_rate + service_charge + tax);
 
+    std::cout<<"Total Room Rate:"<<total_rate<<std::endl;
+    std::cout<<"Service charges:"<<service_charge<<std::endl;
+    std::cout<<"Tax"<<tax<<std::endl;
+    std::cout<<"Total"<<final_rate<<std::endl;
     return final_rate;
 }

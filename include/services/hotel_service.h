@@ -11,6 +11,8 @@
 #include "models/room_category.h"
 #include "models/room_catlog.h"
 #include "services/logger_service.h"
+#include <mutex>
+
 class HotelService {
 
 private:
@@ -18,6 +20,7 @@ private:
         AvailabilityIndex  availability_index;
         RoomCatlog room_catlog;
         LoggerService& loggerservice;
+        std::mutex reservation_mutex;
 
 
 public:

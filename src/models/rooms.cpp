@@ -20,8 +20,8 @@ bool Room::getRoomStatus(){
     return this->room_status;
 }
 
-void Room::setRoomStatus(){
-    this->room_status=true;
+void Room::setRoomStatus(bool room_status){
+    this->room_status=room_status;
 }
 
 

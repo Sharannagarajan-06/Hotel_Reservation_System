@@ -21,7 +21,7 @@ public:
 		std::shared_ptr<RoomCategory> getRoomCategory();
         int getRoomNumber();
         bool getRoomStatus();
-        void setRoomStatus();
+        void setRoomStatus(bool room_status);
 };
 
 #endif //HOTELRESERVATIONSYSTEM_Room_H

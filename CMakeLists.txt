@@ -59,3 +59,5 @@ target_link_libraries(hotel_reservation_system
         PRIVATE
         hotelservice
 )
+
+add_subdirectory(tests)

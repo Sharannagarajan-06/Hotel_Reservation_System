@@ -3,48 +3,49 @@
 
 #include "exceptions/hotel_exception.h"
 
-class UserException:public HotelException {
+class UserException : public HotelException {
 public:
     explicit UserException(const std::string& message)
         : HotelException(message) {
     }
 
-    ~UserException() override=default;
+    ~UserException() override = default;
 };
 
-class UserNotFoundException:public UserException {
+class UserNotFoundException : public UserException {
 public:
     explicit UserNotFoundException(const std::string& message)
         : UserException(message) {
     }
 
-    ~UserNotFoundException()override=default;
+    ~UserNotFoundException() override = default;
 };
 
-class UnauthorizedException:public UserException {
+class UnauthorizedException : public UserException {
 public:
     explicit UnauthorizedException(const std::string& message)
         : UserException(message) {
     }
 
-    ~UnauthorizedException()override=default;
+    ~UnauthorizedException() override = default;
 };
-class AuthenticationException:public UserException {
+
+class AuthenticationException : public UserException {
 public:
     explicit AuthenticationException(const std::string& message)
         : UserException(message) {
     }
 
-    ~AuthenticationException()override=default;
+    ~AuthenticationException() override = default;
 };
 
-class AuthenticationFailedException:public UserException {
+class AuthenticationFailedException : public AuthenticationException {
 public:
     explicit AuthenticationFailedException(const std::string& message)
-        : UserException(message) {
+        : AuthenticationException(message) {
     }
 
-    ~AuthenticationFailedException()override=default;
+    ~AuthenticationFailedException() override = default;
 };
 
 #endif
