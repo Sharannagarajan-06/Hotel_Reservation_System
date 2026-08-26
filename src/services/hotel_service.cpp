@@ -27,6 +27,7 @@
 #include "exceptions/room_exception.h"
 #include "exceptions/reservation_exception.h"
 #include "exceptions/billing_exception.h"
+#include "exceptions/date_exception.h"
 
 bool checkRoom(int room_number, std::vector<Room *> &available_rooms)
 {
@@ -111,6 +112,9 @@ void HotelService::searchRooms()
     std::chrono::year_month_day check_in = getChronoDateFormat(check_in_date);
     std::chrono::year_month_day check_out = getChronoDateFormat(check_out_date);
 
+    if(!check_in.ok() || !check_out.ok()){
+        throw DateException("Invalid Date Format");
+    }
     auto &rooms = hotel.getRooms();
     std::vector<Room *> available_rooms;
 
@@ -375,8 +379,10 @@ void HotelService::addRoom()
     std::cout << "1.Standard\n";
     std::cout << "2.Deluxe\n";
     std::cout << "3.Suite";
+    std::cout<<"Enter Your Choice:";
     std::cin >> choice;
     RoomNames category_name;
+
     switch (choice)
     {
     case 1:
