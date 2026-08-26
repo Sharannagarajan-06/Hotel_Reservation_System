@@ -42,7 +42,43 @@ HotelService::HotelService(Hotel &hotel, LoggerService &loggerservice)
     : hotel(hotel), loggerservice(loggerservice)
 {
 }
+bool HotelService::bookRoom(int room_number,std::chrono::year_month_day check_in,
+            std::chrono::year_month_day check_out,int user_id){
 
+         std::lock_guard<std::mutex> lock(reservation_mutex);
+
+    if (!availability_index.isFree(room_number,check_in,check_out)) {
+        return false;
+    }
+
+    auto reservation = std::make_unique<Reservation>(
+        check_in,
+        check_out,
+        room_number,
+        user_id
+    );
+
+    Reservation* reservation_ptr = reservation.get();
+
+    availability_index.updateAvailability(
+        room_number,
+        check_in,
+        check_out
+    );
+
+    hotel.addReservation(std::move(reservation));
+
+    loggerservice.addLog(
+        std::make_unique<Logger>(
+            user_id,
+            reservation_ptr->getReservationId(),
+            LogMessageType::BOOKING
+        )
+    );
+
+    return true;
+
+   }
 std::chrono::year_month_day HotelService::getChronoDateFormat(std::string &date)
 {
 
@@ -314,7 +350,7 @@ void HotelService::setCheckInStatus()
     std::cout<<"Room Has Been CHECKED-IN Successfully"<<std::endl;
 }
 
-void HotelService::setCheckOutStatus()
+double HotelService::setCheckOutStatus()
 {
 
     int reservation_id;
@@ -366,6 +402,7 @@ void HotelService::setCheckOutStatus()
                                                   LogMessageType::BILLING));
     loggerservice.addLog(std::make_unique<Logger>(reservation->getUserId(), reservation->getReservationId(),
                                                   LogMessageType::CHECK_OUT));
+    return bill;
 }
 
 void HotelService::addRoom()

@@ -30,11 +30,15 @@ public:
         std::chrono::year_month_day check_in,
         std::chrono::year_month_day check_out);
 
+         bool bookRoom(int room_number,std::chrono::year_month_day check_in,
+                        std::chrono::year_month_day check_out,int user_id);
+
+
 		void cancelReservedRoom();
         Reservation* isValidReservationid(int reservation_id,std::vector<std::unique_ptr<Reservation>>& reservations);
         void setCheckInStatus();
         Room* findRoomByRoomNumber(int room_number,std::vector<std::unique_ptr<Room>>& rooms);
-        void setCheckOutStatus();
+        double setCheckOutStatus();
 
         void addRoom();
         void deleteRoom();

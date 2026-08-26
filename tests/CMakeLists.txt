@@ -8,6 +8,8 @@ add_executable(HotelTests
         hotel_service_test.cpp
         availability_index_test.cpp
         billing_test.cpp
+        concurreny_test.cpp
+        hotel_reservation_system.cpp
 )
 
 target_link_libraries(HotelTests

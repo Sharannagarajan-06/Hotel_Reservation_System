@@ -25,6 +25,7 @@ void guestMenu(Hotel &hotel, LoggerService &loggerservice)
             std::cout << "1.Reserve Room " << std::endl;
             std::cout << "2.Cancel Reserved Room" << std::endl;
             std::cout << "3.Exit" << std::endl;
+            std::cout << "Enter Your Choice:";
 
             int choice;
             std::cin >> choice;
@@ -134,7 +135,7 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
                 exit_flag = true;
                 break;
             default:
-                std::cout << "Enter the Valid output" << std::endl;
+                std::cout << "Enter the Valid Input" << std::endl;
                 break;
             }
         }
@@ -168,7 +169,10 @@ void showMainMenu(Hotel &hotel, LoggerService &loggerservice)
         case 1:
             if (verifyAdmin(hotel))
             {
+                try{
                 adminMenu(hotel, loggerservice);
+                }
+
             }
             else
             {
@@ -182,7 +186,7 @@ void showMainMenu(Hotel &hotel, LoggerService &loggerservice)
             exit_flag = true;
             break;
         default:
-            std::cout << "Enter the Valid output" << std::endl;
+            std::cout << "Enter the Valid Input" << std::endl;
             break;
         }
     }
