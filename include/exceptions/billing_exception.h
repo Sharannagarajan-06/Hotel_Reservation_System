@@ -3,6 +3,8 @@
 
 #include "exceptions/hotel_exception.h"
 
+
+
 class BillingException:public HotelException {
 public:
     explicit BillingException(const std::string& message)
