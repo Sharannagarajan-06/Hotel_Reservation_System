@@ -1,12 +1,14 @@
-#include "models/standard_billing.h"
-#include "models/reservation.h"
 #include <iostream>
 #include <chrono>
 
+#include "models/standard_billing.h"
+#include "models/reservation.h"
+
+
 double StandardBilling::calculateBill(
-    Reservation* reservation,
-    double base_rate
-) {
+    Reservation *reservation,
+    double base_rate)
+{
     auto check_in =
         std::chrono::sys_days{reservation->getCheckIn()};
 
@@ -27,10 +29,10 @@ double StandardBilling::calculateBill(
 
     double final_rate =
         total_rate + service_charge + tax;
-    std::cout<<"Total Room Rate:"<<total_rate<<std::endl;
-    std::cout<<"Service charges:"<<service_charge<<std::endl;
-    std::cout<<"Tax:"<<tax<<std::endl;
-    std::cout<<"Total:"<<final_rate<<std::endl;
+    std::cout << "Total Room Rate:" << total_rate << std::endl;
+    std::cout << "Service charges:" << service_charge << std::endl;
+    std::cout << "Tax:" << tax << std::endl;
+    std::cout << "Total:" << final_rate << std::endl;
     addRevenue(final_rate);
     return final_rate;
 }

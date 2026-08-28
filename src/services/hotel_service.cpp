@@ -6,24 +6,28 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <mutex>
+#include <memory>
+
+
 #include "services/hotel_service.h"
+#include "services/auth_service.h"
+#include "services/logger_service.h"
+
 #include "models/rooms.h"
 #include "models/guest_details.h"
 #include "models/availabilityindex.h"
 #include "models/reservation.h"
 #include "models/hotel.h"
 #include "models/room_category.h"
-#include "enums/reservation_status.h"
-#include "services/auth_service.h"
-#include "enums/reservation_status.h"
-#include "services/logger_service.h"
-#include "enums/log_message_type.h"
-#include <memory>
 #include "models/seasonal_billing.h"
 #include "models/standard_billing.h"
 #include "models/billing_strategy.h"
-#include <mutex>
-#include <memory>
+
+#include "enums/reservation_status.h"
+#include "enums/reservation_status.h"
+#include "enums/log_message_type.h"
+
 #include "exceptions/hotel_exception.h"
 #include "exceptions/user_exception.h"
 #include "exceptions/room_exception.h"
@@ -206,6 +210,9 @@ void HotelService::searchRooms()
     std::chrono::year_month_day check_in = getChronoDateFormat(check_in_date);
     std::chrono::year_month_day check_out = getChronoDateFormat(check_out_date);
 
+	if(check_out<=check_in){
+		throw InvalidDateRange(" Checkout Date Should be greater checkout date");
+	}
     if(!check_in.ok() || !check_out.ok()){
         throw DateException("Invalid Date Format");
     }

@@ -25,5 +25,13 @@ public:
 
     ~InvalidDateException() override = default;
 };
+class InvalidDateRange : public HotelException {
+public:
+    explicit InvalidDateRange(const std::string& message)
+        : HotelException(message) {
+    }
+
+    ~InvalidDateRange() override = default;
+};
 
 #endif

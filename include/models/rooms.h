@@ -18,7 +18,7 @@ private:
 public:
         Room(std::shared_ptr<RoomCategory> room_category);
 
-		std::shared_ptr<RoomCategory> getRoomCategory();
+        std::shared_ptr<RoomCategory> getRoomCategory();
         int getRoomNumber();
         bool getRoomStatus();
         void setRoomStatus(bool room_status);

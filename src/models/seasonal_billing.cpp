@@ -4,9 +4,9 @@
 #include <chrono>
 
 double SeasonalBilling::calculateBill(
-    Reservation* reservation,
-    double base_rate
-) {
+    Reservation *reservation,
+    double base_rate)
+{
     auto check_in =
         std::chrono::sys_days{reservation->getCheckIn()};
 
@@ -28,10 +28,10 @@ double SeasonalBilling::calculateBill(
     double final_rate =
         2 * (total_rate + service_charge + tax);
 
-    std::cout<<"Total Room Rate:"<<total_rate<<std::endl;
-    std::cout<<"Service charges:"<<service_charge<<std::endl;
-    std::cout<<"Tax"<<tax<<std::endl;
-    std::cout<<"Total"<<final_rate<<std::endl;
+    std::cout << "Total Room Rate:" << total_rate << std::endl;
+    std::cout << "Service charges:" << service_charge << std::endl;
+    std::cout << "Tax" << tax << std::endl;
+    std::cout << "Total" << final_rate << std::endl;
     addRevenue(final_rate);
     return final_rate;
 }

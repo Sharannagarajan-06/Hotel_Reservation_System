@@ -7,23 +7,22 @@
 #include "enums/room_name.h"
 #include <memory>
 
-RoomCatlog::RoomCatlog() {
+RoomCatlog::RoomCatlog()
+{
     categories.emplace(
         RoomNames::STANDARD,
-        std::make_shared<RoomCategory>(RoomNames::STANDARD, 2, 2000)
-    );
+        std::make_shared<RoomCategory>(RoomNames::STANDARD, 2, 2000));
 
     categories.emplace(
         RoomNames::DELUXE,
-        std::make_shared<RoomCategory>(RoomNames::DELUXE, 3,3000 )
-    );
+        std::make_shared<RoomCategory>(RoomNames::DELUXE, 3, 3000));
 
     categories.emplace(
         RoomNames::SUITE,
-        std::make_shared<RoomCategory>(RoomNames::SUITE, 4, 4000)
-    );
+        std::make_shared<RoomCategory>(RoomNames::SUITE, 4, 4000));
 }
 
-std::shared_ptr<RoomCategory> RoomCatlog::getCategory(RoomNames name){
+std::shared_ptr<RoomCategory> RoomCatlog::getCategory(RoomNames name)
+{
     return categories.at(name);
 }

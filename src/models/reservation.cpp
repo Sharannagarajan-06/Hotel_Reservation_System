@@ -10,44 +10,48 @@
 Reservation::Reservation(
     std::chrono::year_month_day check_in,
     std::chrono::year_month_day check_out,
-    int room_number,int guest_id){
-        if(check_in>=check_out){
-            throw InvalidReservationException(
-                "Check-out date must be after check-in date"
-            );
-        }
-        this->reservation_id=Reservation::next_reservation_id++;
-        this->check_in=check_in;
-        this->check_out=check_out;
-        this->reservation_status=ReservationStatus::RESERVED;
-        this->room_number=room_number;
-        this->guest_id=guest_id;
-    }
+    int room_number, int guest_id)
+{
 
-        std::chrono::year_month_day Reservation::getCheckIn(){
-            return this->check_in;
-        }
+    this->reservation_id = Reservation::next_reservation_id++;
+    this->check_in = check_in;
+    this->check_out = check_out;
+    this->reservation_status = ReservationStatus::RESERVED;
+    this->room_number = room_number;
+    this->guest_id = guest_id;
+}
 
-        std::chrono::year_month_day Reservation::getCheckOut(){
-            return this->check_out;
-        }
+std::chrono::year_month_day Reservation::getCheckIn()
+{
+    return this->check_in;
+}
 
-        ReservationStatus Reservation::getReservationStatus(){
-            return this->reservation_status;
-        }
+std::chrono::year_month_day Reservation::getCheckOut()
+{
+    return this->check_out;
+}
 
-        void Reservation::setReservationStatus(ReservationStatus reservation_status){
-            this->reservation_status=reservation_status;
-        }
+ReservationStatus Reservation::getReservationStatus()
+{
+    return this->reservation_status;
+}
 
-        int Reservation::getReservationId(){
-            return this->reservation_id;
-        }
+void Reservation::setReservationStatus(ReservationStatus reservation_status)
+{
+    this->reservation_status = reservation_status;
+}
 
-        int Reservation::getRoomNumber(){
-            return this->room_number;
-        }
+int Reservation::getReservationId()
+{
+    return this->reservation_id;
+}
 
-        int Reservation::getUserId(){
-            return this->guest_id;
-        }
+int Reservation::getRoomNumber()
+{
+    return this->room_number;
+}
+
+int Reservation::getUserId()
+{
+    return this->guest_id;
+}

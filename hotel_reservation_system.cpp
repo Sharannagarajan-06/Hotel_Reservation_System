@@ -1,15 +1,21 @@
 #include <iostream>
 #include <chrono>
+
 #include "models/room_category.h"
 #include "models/rooms.h"
-#include "enums/room_name.h"
+
 #include "models/guest_details.h"
 #include "models/hotel.h"
 #include "models/reservation.h"
+#include "models/admin_details.h"
+
 #include "services/hotel_service.h"
 #include "services/auth_service.h"
-#include "models/admin_details.h"
 #include "services/logger_service.h"
+
+#include "enums/room_name.h"
+
+
 #include "exceptions/hotel_exception.h"
 #include "exceptions/user_exception.h"
 #include "exceptions/room_exception.h"
@@ -165,6 +171,10 @@ void adminMenu(Hotel &hotel, LoggerService &loggerservice)
                     hotelservice.searchRooms();
                 }
                 catch (const InvalidDateException &e)
+                {
+                    std::cerr << "Invalid date format: " << e.what() << std::endl;
+                }
+				catch (const InvalidDateRange &e)
                 {
                     std::cerr << "Invalid date format: " << e.what() << std::endl;
                 }

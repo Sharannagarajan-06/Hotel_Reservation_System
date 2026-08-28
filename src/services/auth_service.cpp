@@ -13,12 +13,11 @@ UserDetails *AuthService::login(std::string email, std::string password)
 
     for (auto &user : users)
     {
-        if (user->getUserEmail() == email && user->getUserPassword() == password) return user.get();
-
+        if (user->getUserEmail() == email && user->getUserPassword() == password)
+            return user.get();
     }
     throw AuthenticationFailedException(
-        "Invalid email or password"
-    );
+        "Invalid email or password");
 }
 
 bool AuthService::isAdmin(UserDetails *user)
