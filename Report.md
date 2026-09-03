@@ -5,7 +5,7 @@ all  the test cases ran were passed successfully
 
 * `SameRoomCannotBeDoubleBooked`
 
-![](/media/image1.png)
+![Concurrency Test](media/image1.png)
 ## 2. BillingTest
 
 * `StandardBillingDoesNotModifyReservation`
@@ -16,8 +16,8 @@ all  the test cases ran were passed successfully
 * `StandardBillingCalculatesOneDayBill`
 * `StandardBillingCalculatesMultipleDayBill`
 * `DifferentRoomRatesProduceDifferentBills`
-  ![](/media/image2.png)
-* ![](/media/image3.png)
+  ![Billing Test](media/image2.png)
+ ![Billing Test](media/image3.png)
 ## 3. AvailabilityTest
 
 * `NewRoomIsAvailable`
@@ -30,7 +30,7 @@ all  the test cases ran were passed successfully
 * `DifferentRoomsCanBeBookedForSameDates`
 * `CancelledBookingMakesRoomAvailable`
 * `DifferentDateRangesCanUseSameRoom`
-  ![](/media/image4.png)
+  ![AvailabilityTest](media/image4.png)
 * 
 ## 4. HotelServiceTest
 
@@ -44,7 +44,7 @@ all  the test cases ran were passed successfully
 * `ReservationCanBeCheckedOut`
 * `RoomStatusChangesIndependently`
 * `ReservationStoresCorrectRoomAndUser`
-  ![](/media/image5.png)
+  ![HotelServiceTest](media/image5.png)
 ## 5. AuthTest
 
 * `ValidGuestLoginReturnsUser`
@@ -60,7 +60,7 @@ all  the test cases ran were passed successfully
 * `DifferentUsersCanLoginIndependently`
 * `WrongPasswordDoesNotAuthenticateAdmin`
 * `WrongPasswordDoesNotAuthenticateGuest`
-  ![](/media/image6.png)
+  ![AuthTest](media/image6.png)
 ## 6. UserTest
 
 * `GuestCanBeCreated`
@@ -76,7 +76,7 @@ all  the test cases ran were passed successfully
 * `GuestAndAdminHaveDifferentIds`
 * `GuestCanBeStoredUsingBaseClassPointer`
 * `AdminCanBeStoredUsingBaseClassPointer`
-  ![](/media/image7.png)
+  ![UserTest](media/image7.png)
 ## 7. RoomTest
 
 * `RoomCreatedSuccessfully`
@@ -88,7 +88,7 @@ all  the test cases ran were passed successfully
 * `RoomCanBeMarkedAvailable`
 * `MultipleRoomsCanUseSameCategory`
 * `ChangingOneRoomStatusDoesNotChangeAnother`
-  ![](/media/image8.png)
+  ![RoomTest](image8.png)
 ## 8. ReservationTest
 
 * `CreateReservationSuccessfully`
@@ -104,14 +104,15 @@ all  the test cases ran were passed successfully
 * `CanCheckOutReservation`
 * `InvalidDateRangeThrowsException`
 * `SameCheckInAndCheckOutDateThrowsException`
-  ![](/media/image9.png)
+  ![ReservationTest](media/image9.png)
 
 ## Performance insights 
     
 For The Hotel Reservation Management System The availability 
 look up time complexity is O( MxN )
     
-NOTE:   
+NOTE:
+
 * M=Count of the rooms
 * N=the Number of Bookings of each indviual rooms 
 

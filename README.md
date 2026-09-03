@@ -105,11 +105,12 @@ The system also checks for overlapping reservations so that the same room cannot
     └── Report.md
 ```
 The above is the folder structure of the project
+
 * ```include/``` – Contains all header files used in the project
 * ```src/``` – Contains the implementation (.cpp) files.
 * ```media/``` – Contains images used for the project documentation 
 * ```tests/``` – Contains the Google Test test cases for different components of the system.
-* ```CMakeLists.txt``` – Main CMake configuration used to build the project.
+*  ```CMakeLists.txt``` – Main CMake configuration used to build the project.
 * ```hotel_reservation_system.cpp``` – Main entry point of the application.
 * ```README.md``` – Project documentation and instructions.
 * ```Report.md``` – Detailed project report containing testing results, observations, performance insights, and challenges.
@@ -145,6 +146,10 @@ cmake --build .
 ```
 ./hotel_reservation_system.exe
 ```
+### 5.Admin Options
+
+Admin Account an default admin will be created with Email id : admin@gmail.com and passwrod : admin@123
+
 ## RUNNING TESTS
 After building the project, run the test executable from the ```build``` directory uisng
 

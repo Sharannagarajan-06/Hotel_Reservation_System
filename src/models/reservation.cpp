@@ -13,6 +13,12 @@ Reservation::Reservation(
     int room_number, int guest_id)
 {
 
+    if (check_out <= check_in)
+	{
+    	throw InvalidReservationException(
+        "Check-out date must be after check-in date");
+	}
+
     this->reservation_id = Reservation::next_reservation_id++;
     this->check_in = check_in;
     this->check_out = check_out;
